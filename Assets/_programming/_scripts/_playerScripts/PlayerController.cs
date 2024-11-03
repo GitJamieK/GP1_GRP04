@@ -1,28 +1,55 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 using UnityEngine.Serialization;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IPausable
 {
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _rotationSpeed;
-
-    private bool _isRotating;
+    
+    private bool _movementLocked;
     private float _currentMoveSpeed;
     private float _movementInput;
     private Quaternion _targetRotation;
-    private bool _rotationChanged;
-    private Vector3 _currentPositiveAxis;
-    private Vector3 _currentNegativeAxis;
-
-    public bool PlayerIsMovingInReverseDirection;
+    public Vector3 CurrentPositiveAxis { get; private set; }
+    public Vector3 CurrentNegativeAxis { get; private set; }
+    public RotationDirection CurrentRotationDirection { get; private set; }
 
     void Start()
     {
-        GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger += InitiateRotation;
+        SubscribeToEvents();
         _currentMoveSpeed = _moveSpeed;
         RefreshCurrentAxes();
+    }
+    
+    private void OnDestroy()
+    {
+        UnsubscribeFromEvents();
+    }
+    
+    private void SubscribeToEvents()
+    {
+        GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger += RotatePlayer;
+    }
+
+    private void UnsubscribeFromEvents()
+    {
+        GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger -= RotatePlayer;
+    }
+
+    public void Pause()
+    {
+        _currentMoveSpeed = 0f;
+        _movementLocked = true;
+    }
+
+    public void Resume()
+    {
+        _currentMoveSpeed = _moveSpeed;
+        _movementLocked = false;
     }
 
     private void RefreshCurrentAxes()
@@ -32,59 +59,42 @@ public class PlayerController : MonoBehaviour
         
         if (dotProductWithZAxis > 0.01f || dotProductWithZAxis < -0.01f)
         {
-            _currentPositiveAxis = dotProductWithZAxis > 0f ? Vector3.forward : Vector3.back;
-            _currentNegativeAxis = dotProductWithZAxis > 0f ? Vector3.back : Vector3.forward;
+            CurrentPositiveAxis = dotProductWithZAxis > 0f ? Vector3.forward : Vector3.back;
+            CurrentNegativeAxis = dotProductWithZAxis > 0f ? Vector3.back : Vector3.forward;
         }
 
         else if(dotProductWithXAxis > 0.01f || dotProductWithXAxis < -0.01f)
         {
-            _currentPositiveAxis = dotProductWithXAxis > 0f ? Vector3.right : Vector3.left;
-            _currentNegativeAxis = dotProductWithXAxis > 0f ? Vector3.left : Vector3.right;
+            CurrentPositiveAxis = dotProductWithXAxis > 0f ? Vector3.right : Vector3.left;
+            CurrentNegativeAxis = dotProductWithXAxis > 0f ? Vector3.left : Vector3.right;
         }
-    }
-    private void OnDestroy()
-    {
-        GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger -= InitiateRotation;
     }
     
     void Update()
     {
-        if (_isRotating)
-        {
-            RotatePlayer();
+        if (_movementLocked)
             return;
-        }
         _movementInput = Input.GetKey(KeyCode.Space) ? -1f : 1f;
+        
         UpdateRotation();
         UpdateMovement();
     }
 
     private void UpdateMovement()
     {
-        PlayerIsMovingInReverseDirection = _movementInput < 0f;
         transform.position += _currentMoveSpeed * Time.deltaTime * transform.forward;
     }
 
     private void UpdateRotation()
     {
-        transform.forward = _movementInput > 0f ? _currentPositiveAxis : _currentNegativeAxis;
+        transform.forward = _movementInput > 0f ? CurrentPositiveAxis : CurrentNegativeAxis;
     }
 
-    private void InitiateRotation(RotationDirection rotationDirection)
+    private void RotatePlayer(RotationDirection rotationDirection)
     {
-        float rotationAngle = rotationDirection == RotationDirection.FORWARD ? -90f : 90f;
-        _isRotating = true;
-        _currentMoveSpeed = 0f;
-        Vector3 lookVector = Quaternion.AngleAxis(rotationAngle, Vector3.up) * transform.forward;
-        _targetRotation = Quaternion.LookRotation(lookVector, Vector3.up);
-    }
-
-    private void RotatePlayer()
-    {
-        transform.rotation = Quaternion.Lerp(transform.rotation, _targetRotation, 1f);
-        _currentMoveSpeed = _moveSpeed;
-        _isRotating = false;
-        _rotationChanged = true;
+        CurrentRotationDirection = rotationDirection;
+        transform.forward = rotationDirection == RotationDirection.FORWARD ? -transform.right : transform.right;
         RefreshCurrentAxes();
+        _movementLocked = true;
     }
 }
