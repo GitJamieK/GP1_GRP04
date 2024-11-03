@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class CameraMoveTrigger : MonoBehaviour
 {
-    [SerializeField] private CameraMove cam;
-    public static Action OnPlayerEnteredTriggerEvent;
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out PlayerController player))
         {
-            OnPlayerEnteredTriggerEvent?.Invoke();  
+            RotationDirection rotationDirection = player.PlayerIsMovingInReverseDirection
+                ? RotationDirection.REVERSE
+                : RotationDirection.FORWARD;
+            GameManager.Instance.EventService.InvokeOnPlayerEnteredWorldRotationTriggerEvent(rotationDirection);
         }
     }
 }
