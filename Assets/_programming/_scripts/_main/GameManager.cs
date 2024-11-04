@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Jesper.GeneralStateMachine;
+using Jesper.PlayerStateMachine;
 
 public class GameManager : StateMachine
 {

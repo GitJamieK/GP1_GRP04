@@ -4,9 +4,9 @@ public class GamePausedState : ManagerStates
 {
     private GameManager _gameManager;
 
-    public GamePausedState(GameManager m, string anim, string audio) : base(m, anim, audio)
+    public GamePausedState(GameManager manager, string anim, string audio) : base(manager, anim, audio)
     {
-        _gameManager = m;
+        _gameManager = manager;
     }
 
     public override void OnEnter()

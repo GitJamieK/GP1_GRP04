@@ -4,16 +4,15 @@ using UnityEngine;
 public class GamePlayingState : ManagerStates {
     private GameManager _gameManager;
 
-    public GamePlayingState(GameManager m, string anim, string audio) : base(m, anim, audio)
+    public GamePlayingState(GameManager manager, string anim, string audio) : base(manager, anim, audio)
     {
-        _gameManager = m;
+        _gameManager = manager;
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
         _gameManager.Player.Resume();
-
     }
 
     public override void OnExit()

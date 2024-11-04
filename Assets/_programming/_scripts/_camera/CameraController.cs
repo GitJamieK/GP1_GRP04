@@ -4,8 +4,7 @@ using UnityEngine.Serialization;
 
 public class CameraController : MonoBehaviour
 {
-    [FormerlySerializedAs("target")] [SerializeField]
-    private PlayerController _target;
+    [SerializeField] private PlayerController _target;
 
     [SerializeField] private float _rotationRadius;
 
@@ -16,6 +15,7 @@ public class CameraController : MonoBehaviour
     private float _cameraRotationDirection;
 
     private static float _offsetMagnitude = 5f;
+    private readonly float _digitsForRotationDecimal = 1000f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,8 +44,8 @@ public class CameraController : MonoBehaviour
     private void RotateAround()
     {
         float finalPosCheck;
-        _positionOnUnitCircle = Mathf.Round(_positionOnUnitCircle * 1000f) / 1000f;
-        _finalPosOnRotation = Mathf.Round(_finalPosOnRotation * 1000f) / 1000f;
+        _positionOnUnitCircle = Mathf.Round(_positionOnUnitCircle * _digitsForRotationDecimal) / _digitsForRotationDecimal;
+        _finalPosOnRotation = Mathf.Round(_finalPosOnRotation * _digitsForRotationDecimal) / _digitsForRotationDecimal;
         _positionOnUnitCircle += Time.deltaTime * Mathf.Sign(_cameraRotationDirection);
         Vector3 currentRotPosition =
             new Vector3(Mathf.Cos(_positionOnUnitCircle), 0f, Mathf.Sin(_positionOnUnitCircle)) * _rotationRadius;

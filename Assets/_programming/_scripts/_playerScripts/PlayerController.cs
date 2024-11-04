@@ -9,45 +9,31 @@ using Jesper.PlayerStateMachine;
 
 public class PlayerController : MonoBehaviour, IPausable
 {
-    private PlayerStates _currentState;
-    public PlayerIdleState IdleState;
-    public PlayerRunState RunState;
-    public PlayerJumpState JumpState;
-
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _rotationSpeed;
-
+    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private CapsuleCollider _capsuleCollider;
+    [SerializeField] private float _jumpForce;
+    
     private Quaternion _targetRotation;
-    public Vector3 CurrentPositiveAxis { get; private set; }
-    public Vector3 CurrentNegativeAxis { get; private set; }
+    private Vector3 _currentPositiveAxis;
+    private Vector3 _currentNegativeAxis;
+    private bool _movementLocked;
+    private bool _isAirborne;
+    private float _movementDirection; 
+    private float _currentMoveSpeed;
+    
+    private readonly float groundSphereCastDistance = 0.9f;
+    private readonly float groundSphereCastRadius = 0.2f;
+    private readonly int _waitTimeUntilAirborne = 1000;
+    private readonly string groundMask = "Ground";
+    
     public RotationDirection CurrentRotationDirection { get; private set; }
-    public bool MovementLocked { get; private set; }
-    public float MovementDirection { get; private set; }
-
-    [HideInInspector] public float CurrentMoveSpeed;
-
     void Start()
     {
-        _currentState = new PlayerStates();
-        IdleState = new PlayerIdleState(this, "idle", "");
-        RunState = new PlayerRunState(this, "running", "running");
-        JumpState = new PlayerJumpState(this, "jumping", "jumping");
-
-        _currentState = IdleState;
-        _currentState.OnEnter();
-
         SubscribeToEvents();
-        CurrentMoveSpeed = _moveSpeed;
-        MovementDirection = 1f;
+        _currentMoveSpeed = _moveSpeed;
+        _movementDirection = 1f;
         RefreshCurrentAxes();
-    }
-
-    public virtual void SwitchState(PlayerStates newState)
-    {
-        Debug.Log(this.name + " switched to " + newState + " state!");
-        _currentState.OnExit();
-        _currentState = newState;
-        _currentState.OnEnter();
     }
 
     private void OnDestroy()
@@ -67,15 +53,15 @@ public class PlayerController : MonoBehaviour, IPausable
 
     public void Pause()
     {
-        CurrentMoveSpeed = 0f;
-        MovementLocked = true;
+        _currentMoveSpeed = 0f;
+        _movementLocked = true;
     }
 
     public void Resume()
     {
-        CurrentMoveSpeed = _moveSpeed;
-        MovementLocked = false;
-        MovementDirection = 1f;
+        _currentMoveSpeed = _moveSpeed;
+        _movementLocked = false;
+        _movementDirection = 1f;
     }
 
     private void RefreshCurrentAxes()
@@ -85,25 +71,35 @@ public class PlayerController : MonoBehaviour, IPausable
 
         if (dotProductWithZAxis > 0.01f || dotProductWithZAxis < -0.01f)
         {
-            CurrentPositiveAxis = dotProductWithZAxis > 0f ? Vector3.forward : Vector3.back;
-            CurrentNegativeAxis = dotProductWithZAxis > 0f ? Vector3.back : Vector3.forward;
+            _currentPositiveAxis = dotProductWithZAxis > 0f ? Vector3.forward : Vector3.back;
+            _currentNegativeAxis = dotProductWithZAxis > 0f ? Vector3.back : Vector3.forward;
         }
 
         else if (dotProductWithXAxis > 0.01f || dotProductWithXAxis < -0.01f)
         {
-            CurrentPositiveAxis = dotProductWithXAxis > 0f ? Vector3.right : Vector3.left;
-            CurrentNegativeAxis = dotProductWithXAxis > 0f ? Vector3.left : Vector3.right;
+            _currentPositiveAxis = dotProductWithXAxis > 0f ? Vector3.right : Vector3.left;
+            _currentNegativeAxis = dotProductWithXAxis > 0f ? Vector3.left : Vector3.right;
         }
     }
 
     void Update()
     {
-        _currentState.LogicUpdate();
+        if (_movementLocked)
+            return;
+            
+        if(UnityEngine.Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+            DoJump();
+        UpdateMovement();
+        UpdateRotation();
     }
-
-    private void FixedUpdate()
+    
+    private void UpdateMovement()
     {
-        _currentState.PhysicsUpdate();
+        transform.position += _currentMoveSpeed * Time.deltaTime * transform.forward;
+    }
+    private void UpdateRotation()
+    {
+        transform.forward = _movementDirection > 0f ? _currentPositiveAxis : _currentNegativeAxis;
     }
 
     private void RotatePlayer(RotationDirection rotationDirection)
@@ -111,12 +107,30 @@ public class PlayerController : MonoBehaviour, IPausable
         CurrentRotationDirection = rotationDirection;
         transform.forward = rotationDirection == RotationDirection.FORWARD ? -transform.right : transform.right;
         RefreshCurrentAxes();
-        MovementLocked = true;
+        _movementLocked = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("DirectionSwap"))
-            MovementDirection *= -1f;
+            _movementDirection *= -1f;
+    }
+
+    private void DoJump()
+    {
+        _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+    }
+    
+    private bool IsGrounded()
+    {
+        RaycastHit hitInfo;
+        Vector3 center = _capsuleCollider.bounds.center;
+        return Physics.SphereCast(center, groundSphereCastRadius, -Vector3.up, out hitInfo, groundSphereCastDistance, LayerMask.GetMask(groundMask));
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if(!IsGrounded())
+            _rigidbody.AddForce(-transform.forward * _currentMoveSpeed * 2, ForceMode.Impulse);
     }
 }

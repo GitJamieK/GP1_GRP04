@@ -3,7 +3,7 @@ namespace Jesper.PlayerStateMachine {
         /// <summary>
         /// Reference to Player Script
         /// </summary>
-        protected PlayerController Player;
+        protected NewPlayerController NewPlayer;
         private string AnimationName { get; set; }
         private string AudioFileName { get; set; }
 
@@ -21,8 +21,8 @@ namespace Jesper.PlayerStateMachine {
         /// <example>p = Reference to Player.
         /// anim = Reference to Animation Parameter Name.
         /// audio = Reference to Audio Clip Name.</example>
-        public PlayerStates(PlayerController p, string anim, string audio) {
-            Player = p;
+        public PlayerStates(NewPlayerController p, string anim, string audio) {
+            NewPlayer = p;
             AnimationName = anim;
             AudioFileName = audio;
         }
