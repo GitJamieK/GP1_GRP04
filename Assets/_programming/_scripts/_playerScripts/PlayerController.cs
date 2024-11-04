@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour, IPausable
     
     private bool _movementLocked;
     private float _currentMoveSpeed;
-    private float _movementInput;
+    private float _movementDirection;
     private Quaternion _targetRotation;
     public Vector3 CurrentPositiveAxis { get; private set; }
     public Vector3 CurrentNegativeAxis { get; private set; }
@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         SubscribeToEvents();
         _currentMoveSpeed = _moveSpeed;
+        _movementDirection = 1f;
         RefreshCurrentAxes();
     }
     
@@ -74,7 +75,6 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         if (_movementLocked)
             return;
-        _movementInput = Input.GetKey(KeyCode.Space) ? -1f : 1f;
         
         UpdateRotation();
         UpdateMovement();
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour, IPausable
 
     private void UpdateRotation()
     {
-        transform.forward = _movementInput > 0f ? CurrentPositiveAxis : CurrentNegativeAxis;
+        transform.forward = _movementDirection > 0f ? CurrentPositiveAxis : CurrentNegativeAxis;
     }
 
     private void RotatePlayer(RotationDirection rotationDirection)
@@ -96,5 +96,11 @@ public class PlayerController : MonoBehaviour, IPausable
         transform.forward = rotationDirection == RotationDirection.FORWARD ? -transform.right : transform.right;
         RefreshCurrentAxes();
         _movementLocked = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("DirectionSwap"))
+            _movementDirection *= -1f;
     }
 }
