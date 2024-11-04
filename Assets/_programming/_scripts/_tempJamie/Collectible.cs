@@ -22,6 +22,7 @@ namespace jamie {
                 Destroy(gameObject);
 
                 //add UI logic (3/20 acorns)
+                //idea; add minimal particle effect upon collecting acorn
             }
         }
     }
