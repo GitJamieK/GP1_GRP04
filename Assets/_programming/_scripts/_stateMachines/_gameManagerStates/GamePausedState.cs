@@ -6,7 +6,7 @@ public class GamePausedState : ManagerStates
 
     public GamePausedState(GameManager m, string anim, string audio) : base(m, anim, audio)
     {
-        m = _gameManager;
+        _gameManager = m;
     }
 
     public override void OnEnter()

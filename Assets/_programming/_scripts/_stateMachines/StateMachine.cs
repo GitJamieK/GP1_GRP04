@@ -1,28 +1,29 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Jesper.GeneralStateMachine;
 
 public class StateMachine : MonoBehaviour
 {
-    public List<State> states;
-    protected State currentState;
+    public List<ManagerStates> states;
+    protected ManagerStates currentState;
     
     protected virtual void AddStates(){}
 
     public void UpdateStateMachine()
     {
-        currentState?.UpdateState();
+        currentState?.LogicUpdate();
     }
 
     protected void SwitchState<TanyState>()
     {
-        foreach (State state in states)
+        foreach (ManagerStates state in states)
         {
             if (state.GetType() == typeof(TanyState))
             {
-                currentState?.ExitState();
+                currentState?.OnExit();
                 currentState = state;
-                currentState?.EnterState();
+                currentState?.OnEnter();
                 return;
             }
         }

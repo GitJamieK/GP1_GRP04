@@ -6,7 +6,7 @@ public class GamePlayingState : ManagerStates {
 
     public GamePlayingState(GameManager m, string anim, string audio) : base(m, anim, audio)
     {
-        m = _gameManager;
+        _gameManager = m;
     }
 
     public override void OnEnter()
@@ -44,10 +44,5 @@ public class GamePlayingState : ManagerStates {
     public override void AudioTrigger()
     {
         base.AudioTrigger();
-    }
-    
-    public GamePlayingState(GameManager gameManager)
-    {
-        
     }
 }

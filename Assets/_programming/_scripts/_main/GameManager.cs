@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Jesper.GeneralStateMachine;
 
 public class GameManager : StateMachine
 {
@@ -54,9 +55,9 @@ public class GameManager : StateMachine
     
     private void CreateStates()
     {
-        states = new List<State>();
-        states.Add(new GamePausedState(this));
-        states.Add(new GamePlayingState(this));
+        states = new List<ManagerStates>();
+        states.Add(new GamePausedState(this, "", ""));
+        states.Add(new GamePlayingState(this, "", ""));
     }
 
     private void OnPlayerEnteredWorldRotationTrigger(RotationDirection rotationDirection)
