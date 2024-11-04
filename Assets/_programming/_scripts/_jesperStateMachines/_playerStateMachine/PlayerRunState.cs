@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Jesper.PlayerStateMachine {
     public class PlayerRunState : PlayerStates {
-        public PlayerRunState(object p, string anim, string audio) : base (p, anim, audio) { }
+        public PlayerRunState(PlayerController p, string anim, string audio) : base (p, anim, audio) { }
 
         public override void OnEnter() {
             base.OnEnter();
@@ -17,6 +17,7 @@ namespace Jesper.PlayerStateMachine {
 
         public override void LogicUpdate() {
             base.LogicUpdate();
+            UpdateMovement();
         }
 
         public override void PhysicsUpdate() {
@@ -33,6 +34,11 @@ namespace Jesper.PlayerStateMachine {
 
         public override void AudioTrigger() {
             base.AudioTrigger();
+        }
+        
+        private void UpdateMovement()
+        {
+            Player.transform.position += Player.CurrentMoveSpeed * Time.deltaTime * Player.transform.forward;
         }
     }
 }
