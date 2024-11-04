@@ -7,11 +7,12 @@ namespace jamie {
     /// </summary>
     public class Collectible : MonoBehaviour {
         Player p;
+        public GameObject collectParticlePrefab;
         /// <summary>
         /// Handle collision from acorn collectible to player
         /// </summary>
         /// <param name="other"></param>
-        void OnCollisionEnter(Collision other) {
+        void OnTriggerEnter(Collider other) {
             //Debug.Log("collision with Acorn from player");
             p = other.gameObject.GetComponent<Player>();
 
@@ -19,10 +20,11 @@ namespace jamie {
                 p.AcornScore++;
                 Debug.Log("Player has collected an Acorn. Acorn score: " + p.AcornScore);
 
+                Instantiate(collectParticlePrefab, transform.position, Quaternion.identity);
+
                 Destroy(gameObject);
 
                 //add UI logic (3/20 acorns)
-                //idea; add minimal particle effect upon collecting acorn
             }
         }
     }
