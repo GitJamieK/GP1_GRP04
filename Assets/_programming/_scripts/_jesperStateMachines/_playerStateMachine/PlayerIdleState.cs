@@ -2,11 +2,12 @@
 
 namespace Jesper.PlayerStateMachine {
     public class PlayerIdleState : PlayerStates{
-        public PlayerIdleState(object p, string anim, string audio) : base(p, anim, audio) { }
+        public PlayerIdleState(PlayerController p, string anim, string audio) : base(p, anim, audio) { }
 
         public override void OnEnter() {
             base.OnEnter();
             Debug.Log("Player are Idle");
+            Player.SwitchState(Player.RunState);
         }
 
         public override void OnExit() {

@@ -1,9 +1,8 @@
 using UnityEngine;
 
 namespace Jesper.PlayerStateMachine {
-    public class PlayerJumpState : PlayerStates
-    {
-        public PlayerJumpState(object p, string anim, string audio) : base(p, anim, audio) { }
+    public class PlayerJumpState : PlayerStates {
+        public PlayerJumpState(PlayerController p, string anim, string audio) : base(p, anim, audio) { }
 
         public override void OnEnter() {
             base.OnEnter();

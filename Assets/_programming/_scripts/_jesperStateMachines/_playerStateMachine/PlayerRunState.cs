@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Buffers.Text;
 using UnityEngine;
+using System.Collections;
 
 namespace Jesper.PlayerStateMachine {
     public class PlayerRunState : PlayerStates {
-        public PlayerRunState(object p, string anim, string audio) : base (p, anim, audio) { }
+        public PlayerRunState(PlayerController p, string anim, string audio) : base (p, anim, audio) { }
 
         public override void OnEnter() {
             base.OnEnter();
@@ -17,6 +18,15 @@ namespace Jesper.PlayerStateMachine {
 
         public override void LogicUpdate() {
             base.LogicUpdate();
+
+            if (Player.MovementLocked)
+                return;
+            
+            if(UnityEngine.Input.GetKeyDown(KeyCode.Space))
+                Player.SwitchState(Player.JumpState);
+            
+            UpdateMovement();
+            UpdateRotation();
         }
 
         public override void PhysicsUpdate() {
@@ -33,6 +43,15 @@ namespace Jesper.PlayerStateMachine {
 
         public override void AudioTrigger() {
             base.AudioTrigger();
+        }
+        
+        private void UpdateMovement()
+        {
+            Player.transform.position += Player.CurrentMoveSpeed * Time.deltaTime * Player.transform.forward;
+        }
+        private void UpdateRotation()
+        {
+            Player.transform.forward = Player.MovementDirection > 0f ? Player.CurrentPositiveAxis : Player.CurrentNegativeAxis;
         }
     }
 }
