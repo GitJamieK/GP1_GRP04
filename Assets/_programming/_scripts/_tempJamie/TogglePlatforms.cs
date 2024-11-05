@@ -7,11 +7,13 @@ namespace jamie {
     /// <summary>
     public class TogglePlatforms : MonoBehaviour {
         public List<GameObject> platforms = new List<GameObject>();
-        void Update() {
-            if (Input.GetKeyDown(KeyCode.T)) {
-                Toggle();
-            }
-        }
+        private Input input;
+        
+        //void Update() {
+        //    if (Input.GetKeyDown(KeyCode.T)) {
+        //        Toggle();
+        //    }
+        //}
 
         public void Toggle() {
             if (platforms != null && platforms.Count > 0) {
