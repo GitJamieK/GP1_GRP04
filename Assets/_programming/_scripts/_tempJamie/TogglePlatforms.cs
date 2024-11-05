@@ -9,11 +9,11 @@ namespace jamie {
         public List<GameObject> platforms = new List<GameObject>();
         private Input input;
         
-        //void Update() {
-        //    if (Input.GetKeyDown(KeyCode.T)) {
-        //        Toggle();
-        //    }
-        //}
+        void Update() {
+            if (UnityEngine.Input.GetKeyDown(KeyCode.T)) {
+                Toggle();
+            }
+        }
 
         public void Toggle() {
             if (platforms != null && platforms.Count > 0) {
