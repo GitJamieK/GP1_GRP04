@@ -22,10 +22,9 @@ public class PlayerController : MonoBehaviour, IPausable
     private float _movementDirection; 
     private float _currentMoveSpeed;
     
-    private readonly float groundSphereCastDistance = 0.9f;
-    private readonly float groundSphereCastRadius = 0.2f;
-    private readonly int _waitTimeUntilAirborne = 1000;
-    private readonly string groundMask = "Ground";
+    private readonly float _groundSphereCastDistance = 0.9f;
+    private readonly float _groundSphereCastRadius = 0.2f;
+    private readonly string _groundMask = "Ground";
     
     public RotationDirection CurrentRotationDirection { get; private set; }
     void Start()
@@ -125,7 +124,7 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         RaycastHit hitInfo;
         Vector3 center = _capsuleCollider.bounds.center;
-        return Physics.SphereCast(center, groundSphereCastRadius, -Vector3.up, out hitInfo, groundSphereCastDistance, LayerMask.GetMask(groundMask));
+        return Physics.SphereCast(center, _groundSphereCastRadius, -Vector3.up, out hitInfo, _groundSphereCastDistance, LayerMask.GetMask(_groundMask));
     }
 
     private void OnCollisionEnter(Collision other)
