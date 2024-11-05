@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6330422450353471481}
   m_Layer: 3
   m_Name: platform
-  m_TagString: Untagged
+  m_TagString: DirectionSwap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

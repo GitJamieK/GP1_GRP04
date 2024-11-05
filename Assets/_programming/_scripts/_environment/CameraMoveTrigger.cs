@@ -31,7 +31,6 @@ public class CameraMoveTrigger : MonoBehaviour
             _newPlayer.transform.position = newPlayerPos;
             RotationDirection rotationDirection =
                 _playerIsGoingUp ? RotationDirection.FORWARD : RotationDirection.REVERSE;
-            Debug.Log(rotationDirection);
             GameManager.Instance.EventService.InvokePlayerEnteredWorldRotationTriggerEvent(rotationDirection);
         }
     }

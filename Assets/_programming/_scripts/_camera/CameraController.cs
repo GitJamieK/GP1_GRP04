@@ -21,6 +21,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         _offsetVector = new Vector3(0f, 0f, -_offsetMagnitude);
+        GetCamOffsetFromPlayer();
         GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger += StartRotateAround;
     }
 
@@ -59,14 +60,7 @@ public class CameraController : MonoBehaviour
 
         if (finalPosCheck <= 0f)
         {
-            float dotProductOnXAxis = Vector3.Dot(_target.gameObject.transform.forward, Vector3.right);
-            float dotProductOnZAxis = Vector3.Dot(_target.gameObject.transform.forward, Vector3.forward);
-
-            if (dotProductOnXAxis > 0.01f || dotProductOnXAxis < -0.01f)
-                _offsetVector = new Vector3(0f, 0f, GetOffsetMagnitudeAlongZAxis(dotProductOnXAxis));
-            else if (dotProductOnZAxis > 0.01f || dotProductOnZAxis < -0.01f)
-                _offsetVector = new Vector3(GetOffsetMagnitudeAlongXAxis(dotProductOnZAxis), 0f, 0f);
-
+            GetCamOffsetFromPlayer();
             GameManager.Instance.EventService.InvokeCameraFinishedRotationEvent();
             _rotateAroundCorner = false;
         }
@@ -135,6 +129,17 @@ public class CameraController : MonoBehaviour
         }
 
         return _offsetMagnitude;
+    }
+
+    private void GetCamOffsetFromPlayer()
+    {
+        float dotProductOnXAxis = Vector3.Dot(_target.gameObject.transform.forward, Vector3.right);
+        float dotProductOnZAxis = Vector3.Dot(_target.gameObject.transform.forward, Vector3.forward);
+
+        if (dotProductOnXAxis > 0.01f || dotProductOnXAxis < -0.01f)
+            _offsetVector = new Vector3(0f, 0f, GetOffsetMagnitudeAlongZAxis(dotProductOnXAxis));
+        else if (dotProductOnZAxis > 0.01f || dotProductOnZAxis < -0.01f)
+            _offsetVector = new Vector3(GetOffsetMagnitudeAlongXAxis(dotProductOnZAxis), 0f, 0f);
     }
 
     private void StartRotateAround(RotationDirection rotationDirection)
