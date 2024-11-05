@@ -8,20 +8,21 @@ public class PlayerController : MonoBehaviour, IPausable
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private CapsuleCollider _capsuleCollider;
     [SerializeField] private float _jumpForce;
-    
+
     private Quaternion _targetRotation;
     private Vector3 _currentPositiveAxis;
     private Vector3 _currentNegativeAxis;
     private bool _movementLocked;
     private bool _isAirborne;
-    private float _movementDirection; 
+    private float _movementDirection;
     private float _currentMoveSpeed;
-    
+
     private readonly float groundSphereCastDistance = 0.9f;
     private readonly float groundSphereCastRadius = 0.2f;
     private readonly string groundMask = "Ground";
-    
+
     public RotationDirection CurrentRotationDirection { get; private set; }
+
     void Start()
     {
         SubscribeToEvents();
@@ -80,26 +81,26 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         if (_movementLocked)
             return;
-            
-        if(UnityEngine.Input.GetKeyDown(KeyCode.Space) && IsGrounded())
-            DoJump();
-        
-        if(UnityEngine.Input.GetKeyDown(KeyCode.A))
+
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+            MakePlayerJump();
+
+        if (UnityEngine.Input.GetKeyDown(KeyCode.A))
             GameManager.Instance.EventService.InvokePlayerToggledPlatformTriggerEvent();
-        
+
         UpdateMovement();
         UpdateRotation();
     }
 
     public void DoJump(InputAction.CallbackContext ctx)
     {
-        if(ctx.performed && IsGrounded())
-            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        if (ctx.performed && IsGrounded())
+            MakePlayerJump();
     }
 
     public void DoTogglePlatform(InputAction.CallbackContext ctx)
     {
-        if(ctx.performed)
+        if (ctx.performed)
             GameManager.Instance.EventService.InvokePlayerToggledPlatformTriggerEvent();
     }
 
@@ -107,6 +108,7 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         transform.position += _currentMoveSpeed * Time.deltaTime * transform.forward;
     }
+
     private void UpdateRotation()
     {
         transform.forward = _movementDirection > 0f ? _currentPositiveAxis : _currentNegativeAxis;
@@ -126,21 +128,22 @@ public class PlayerController : MonoBehaviour, IPausable
             _movementDirection *= -1f;
     }
 
-    private void DoJump()
+    private void MakePlayerJump()
     {
         _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
     }
-    
+
     private bool IsGrounded()
     {
         RaycastHit hitInfo;
         Vector3 center = _capsuleCollider.bounds.center;
-        return Physics.SphereCast(center, groundSphereCastRadius, -Vector3.up, out hitInfo, groundSphereCastDistance, LayerMask.GetMask(groundMask));
+        return Physics.SphereCast(center, groundSphereCastRadius, -Vector3.up, out hitInfo, groundSphereCastDistance,
+            LayerMask.GetMask(groundMask));
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if(!IsGrounded())
-            _rigidbody.AddForce(-transform.forward * _currentMoveSpeed * 2, ForceMode.Impulse);
+        // if (!IsGrounded())
+        //     _rigidbody.AddForce(-transform.forward * _currentMoveSpeed * 2, ForceMode.Impulse);
     }
 }

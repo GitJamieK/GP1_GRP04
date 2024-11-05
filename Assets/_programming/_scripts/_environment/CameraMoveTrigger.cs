@@ -6,14 +6,16 @@ public class CameraMoveTrigger : MonoBehaviour
     private bool _playerIsGoingUp;
     private bool _playerTriggeredCamMovement;
     private PlayerController _newPlayer;
+    private bool _collidedWithPlayer;
     private readonly float _playerReachThreshold = 0.3f;
     private readonly float _digitsForPositionDecimal = 10f;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out PlayerController player))
+        if (other.TryGetComponent(out PlayerController player) && !_collidedWithPlayer)
         {
             _newPlayer = player;
             _playerIsGoingUp = !_playerIsGoingUp;
+            _collidedWithPlayer = true;
         }
     }
 
@@ -29,6 +31,7 @@ public class CameraMoveTrigger : MonoBehaviour
             _newPlayer.transform.position = newPlayerPos;
             RotationDirection rotationDirection =
                 _playerIsGoingUp ? RotationDirection.FORWARD : RotationDirection.REVERSE;
+            Debug.Log(rotationDirection);
             GameManager.Instance.EventService.InvokePlayerEnteredWorldRotationTriggerEvent(rotationDirection);
         }
     }
@@ -38,6 +41,7 @@ public class CameraMoveTrigger : MonoBehaviour
         if (_newPlayer)
             _newPlayer = null;
         _playerTriggeredCamMovement = false;
+        _collidedWithPlayer = false;
     }
 
     private bool PosCheck(Transform playerTransform)
