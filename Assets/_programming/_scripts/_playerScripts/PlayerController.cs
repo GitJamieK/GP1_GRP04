@@ -1,10 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
-using UnityEngine.Serialization;
-using Jesper.PlayerStateMachine;
 
 
 public class PlayerController : MonoBehaviour, IPausable
@@ -24,7 +18,6 @@ public class PlayerController : MonoBehaviour, IPausable
     
     private readonly float groundSphereCastDistance = 0.9f;
     private readonly float groundSphereCastRadius = 0.2f;
-    private readonly int _waitTimeUntilAirborne = 1000;
     private readonly string groundMask = "Ground";
     
     public RotationDirection CurrentRotationDirection { get; private set; }
@@ -89,6 +82,10 @@ public class PlayerController : MonoBehaviour, IPausable
             
         if(UnityEngine.Input.GetKeyDown(KeyCode.Space) && IsGrounded())
             DoJump();
+        
+        if(UnityEngine.Input.GetKeyDown(KeyCode.A))
+            GameManager.Instance.EventService.InvokePlayerToggledPlatformTriggerEvent();
+        
         UpdateMovement();
         UpdateRotation();
     }
