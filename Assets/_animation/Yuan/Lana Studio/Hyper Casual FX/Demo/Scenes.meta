@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/_animation/Yuan/Lana Studio/Hyper Casual FX/Demo/Scenes.meta
 guid: 6f055433f6c8e6c4ab39209fe1983139
+========
+guid: f9b5cc0800ca45740a50dd2e6972b17d
+>>>>>>>> Kiran:Assets/Scenes.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

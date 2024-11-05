@@ -12,14 +12,14 @@ namespace Jesper.GeneralStateMachine {
         /// <summary>
         /// Default Constructor. Choose this one
         /// </summary>
-        /// <param name="m"></param>
+        /// <param name="manager"></param>
         /// <param name="anim"></param>
         /// <param name="audio"></param>
         /// <example>m = Reference to Manager.
         /// anim = Reference to Animation Parameter Name.
         /// audio = Reference to Audio Clip Name.</example>
-        public ManagerStates(object m, string anim, string audio) {
-            manager = m;
+        public ManagerStates(object manager, string anim, string audio) {
+            this.manager = manager;
             AnimationName = anim;
             AudioFileName = audio;
         }
