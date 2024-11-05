@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public class PlayerController : MonoBehaviour, IPausable
@@ -89,7 +90,19 @@ public class PlayerController : MonoBehaviour, IPausable
         UpdateMovement();
         UpdateRotation();
     }
-    
+
+    public void DoJump(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed && IsGrounded())
+            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+    }
+
+    public void DoTogglePlatform(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+            GameManager.Instance.EventService.InvokePlayerToggledPlatformTriggerEvent();
+    }
+
     private void UpdateMovement()
     {
         transform.position += _currentMoveSpeed * Time.deltaTime * transform.forward;

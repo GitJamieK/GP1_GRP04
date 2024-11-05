@@ -971,6 +971,7 @@ GameObject:
   - component: {fileID: 1206759592}
   - component: {fileID: 1206759586}
   - component: {fileID: 1206759591}
+  - component: {fileID: 1206759593}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1113,6 +1114,124 @@ MonoBehaviour:
   _rigidbody: {fileID: 1206759591}
   _capsuleCollider: {fileID: 1206759586}
   _jumpForce: 10
+--- !u!114 &1206759593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206759585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: f7d9825f2f1bf6543948980a58f029d5, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1206759592}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: DoTogglePlatform
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bbedbe58-c691-49da-a41a-bf9b6b3ec3c4
+    m_ActionName: 'Adaptive_Controller_GamePad/Left_Button[/XInputControllerWindows/buttonSouth]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1206759592}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: DoJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cf711bc0-a4dc-4abd-83b2-1029fb160488
+    m_ActionName: 'Adaptive_Controller_GamePad/Right_Button[/XInputControllerWindows/buttonEast]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6589b1a1-dcc4-4ff7-9795-7669539c655e
+    m_ActionName: 'Adaptive_Controller_GamePad/Pause_Button[/XInputControllerWindows/select]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8b2b784a-f999-4d30-a6f1-bb6314d41d18
+    m_ActionName: 'Adaptive_Controller_GamePad/Start_Button[/XInputControllerWindows/start]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 881a7799-a667-453e-8e20-96f0a8169de8
+    m_ActionName: 'Adaptive_Controller_GamePad/GamePad_Up[/XInputControllerWindows/dpad/up]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 58695093-b99b-42b6-b5f0-7aa6ba86a879
+    m_ActionName: 'Adaptive_Controller_GamePad/GamePad_Down[/XInputControllerWindows/dpad/down]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 992c6d3c-6a0b-4a5a-981d-5e27892e9273
+    m_ActionName: 'Adaptive_Controller_GamePad/GamePad_Left[/XInputControllerWindows/dpad/left]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f9d53b29-47db-4485-ab48-f362b479b22b
+    m_ActionName: 'Adaptive_Controller_GamePad/GamePad_Right[/XInputControllerWindows/dpad/right]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0fec8239-0475-49e7-9a87-f39460b4808b
+    m_ActionName: 'Adaptive_Controller_Xbox/Left_Button[/XInputControllerWindows/buttonSouth]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5ce49c9a-41d6-4299-bac7-233348470778
+    m_ActionName: 'Adaptive_Controller_Xbox/Right_Button[/XInputControllerWindows/buttonEast]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5622ad81-579d-4715-8a51-bc5395cd1e1a
+    m_ActionName: 'Adaptive_Controller_Xbox/Pause_Button[/XInputControllerWindows/select]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9e4e5c4f-139f-411d-b4ab-179db6aa560f
+    m_ActionName: 'Adaptive_Controller_Xbox/Start_Button[/XInputControllerWindows/start]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e212b118-080e-4fc0-8a82-c162c9c264a6
+    m_ActionName: 'Adaptive_Controller_Xbox/Button_Up[/XInputControllerWindows/dpad/up]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 06ff3a67-0c4a-409a-86ee-655af8bbf618
+    m_ActionName: 'Adaptive_Controller_Xbox/Button_Down[/XInputControllerWindows/dpad/down]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 76482a67-d9dc-454c-aa60-626a1287dc6d
+    m_ActionName: 'Adaptive_Controller_Xbox/Button_Left[/XInputControllerWindows/dpad/left]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e4487dcf-6cb5-41f6-b4a5-95476a066410
+    m_ActionName: 'Adaptive_Controller_Xbox/Button_Right[/XInputControllerWindows/dpad/right]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Adaptive_Controller_GamePad
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1371176567
 GameObject:
   m_ObjectHideFlags: 0
