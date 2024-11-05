@@ -1,16 +1,32 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UIService : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+public class UIService : MonoBehaviour {
+    
+    [Header("UI Elements")]
+    [SerializeField] private Text _collectibleText;
+
+
+    private void Init() {
+        SubscribeToEvents();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    private void Start() {
+        _collectibleText.text = "x0";
+    }
+
+    private void OnDestroy() {
+        UnsubscribeFromEvents();
+    }
+
+    private void SubscribeToEvents() {
+        
+    }
+    
+    private void UnsubscribeFromEvents() {}
+
+    private void Update() {
         
     }
 }
