@@ -7,7 +7,7 @@ namespace jamie {
     /// Logic for collecting Acorns that then increases Player.AcornScore by 1
     /// </summary>
     public class Collectible : MonoBehaviour {
-        Player p;
+        PlayerController p;
         public GameObject collectParticlePrefab;
 
         private float _bounceSpeed = 2f;
@@ -31,18 +31,11 @@ namespace jamie {
         /// </summary>
         /// <param name="other"></param>
         void OnTriggerEnter(Collider other) {
-            //Debug.Log("collision with Acorn from player");
-            p = other.gameObject.GetComponent<Player>();
-
+            p = other.gameObject.GetComponent<PlayerController>();
             if (p != null) {
-                p.acornScore++;
-                Debug.Log("Player has collected an Acorn. Acorn score: " + p.acornScore);
-
+                GameManager.Instance.EventService.InvokePlayerCollectedAcornEvent();
                 Instantiate(collectParticlePrefab, transform.position, Quaternion.identity);
-
                 Destroy(gameObject);
-
-                //add UI logic (3/20 acorns)
             }
         }
     }

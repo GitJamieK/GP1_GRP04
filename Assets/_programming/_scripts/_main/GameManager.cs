@@ -16,6 +16,7 @@ public class GameManager : StateMachine
     
     public EventService EventService;
     public PlayerController Player;
+    public int NumberOfAcornsCollected;
 
     private void Awake()
     {
@@ -25,7 +26,6 @@ public class GameManager : StateMachine
             Destroy(gameObject);
         
         DontDestroyOnLoad(this);
-        SceneManager.activeSceneChanged += OnNewSceneChange;
         InitializeServices();
         CreateStates();
     }
@@ -40,22 +40,25 @@ public class GameManager : StateMachine
     {
         UnsubscribeFromEvents();
     }
-
-    private void OnNewSceneChange(Scene currentScene, Scene nextScene)
-    {
-        Player = FindAnyObjectByType<PlayerController>();
-    }
-
     private void SubscribeToEvents()
     {
         EventService.OnPlayerEnteredWorldRotationTrigger += OnPlayerEnteredWorldRotationTrigger;
         EventService.OnCameraFinishedRotation += SwitchState<GamePlayingState>;
+        EventService.OnPlayerCollectedAcorn += UpdateAcorns;
+        SceneManager.activeSceneChanged += OnNewSceneChange;
     }
 
     private void UnsubscribeFromEvents()
     {
         EventService.OnPlayerEnteredWorldRotationTrigger -= OnPlayerEnteredWorldRotationTrigger;
         EventService.OnCameraFinishedRotation -= SwitchState<GamePlayingState>;
+        EventService.OnPlayerCollectedAcorn -= UpdateAcorns;
+        SceneManager.activeSceneChanged -= OnNewSceneChange;
+    }
+
+    private void OnNewSceneChange(Scene currentScene, Scene nextScene)
+    {
+        Player = FindAnyObjectByType<PlayerController>();
     }
     
     private void InitializeServices()
@@ -75,4 +78,6 @@ public class GameManager : StateMachine
     {
         SwitchState<GameRotationState>();
     }
+
+    private void UpdateAcorns() => NumberOfAcornsCollected++;
 }
