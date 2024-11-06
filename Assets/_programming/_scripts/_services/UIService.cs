@@ -28,11 +28,11 @@ public class UIService : MonoBehaviour {
     }
 
     private void SubscribeToEvents() {
-        EventService.OnCollectibleCollectedTextUpdate += OnCollectibleCollectedTextUpdate;
+        //EventService.OnCollectibleCollectedTextUpdate += OnCollectibleCollectedTextUpdate;
     }
 
     private void UnsubscribeFromEvents() {
-        EventService.OnCollectibleCollectedTextUpdate -= OnCollectibleCollectedTextUpdate;
+        //EventService.OnCollectibleCollectedTextUpdate -= OnCollectibleCollectedTextUpdate;
 
     }
 
