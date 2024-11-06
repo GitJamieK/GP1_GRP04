@@ -20,6 +20,7 @@ public class CameraController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        _target = FindAnyObjectByType<PlayerController>();
         _offsetVector = new Vector3(0f, 0f, -_offsetMagnitude);
         GetCamOffsetFromPlayer();
         GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger += StartRotateAround;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Jesper.GeneralStateMachine;
 using Jesper.PlayerStateMachine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : StateMachine
 {
@@ -23,6 +24,8 @@ public class GameManager : StateMachine
         else
             Destroy(gameObject);
         
+        DontDestroyOnLoad(this);
+        SceneManager.activeSceneChanged += OnNewSceneChange;
         InitializeServices();
         CreateStates();
     }
@@ -36,6 +39,11 @@ public class GameManager : StateMachine
     private void OnDestroy()
     {
         UnsubscribeFromEvents();
+    }
+
+    private void OnNewSceneChange(Scene currentScene, Scene nextScene)
+    {
+        Player = FindAnyObjectByType<PlayerController>();
     }
 
     private void SubscribeToEvents()
