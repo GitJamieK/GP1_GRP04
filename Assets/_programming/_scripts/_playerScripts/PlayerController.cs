@@ -8,13 +8,14 @@ public class PlayerController : MonoBehaviour, IPausable
     [SerializeField] private float _jumpForce;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private CapsuleCollider _capsuleCollider;
-    [SerializeField] private ParticleSystem _runDustParticles;
+    [SerializeField] private Animator _animator;
+    // [SerializeField] private ParticleSystem _runDustParticles;
 
     private Quaternion _targetRotation;
     private Vector3 _currentPositiveAxis;
     private Vector3 _currentNegativeAxis;
+    private readonly Vector3 _offsetVector = new Vector3(0.0001f, 0f, 0.0001f);
     private bool _movementLocked;
-    private bool _isAirborne;
     private float _movementDirection;
     private float _currentMoveSpeed;
 
@@ -24,12 +25,15 @@ public class PlayerController : MonoBehaviour, IPausable
 
     public RotationDirection CurrentRotationDirection { get; private set; }
 
+    void Awake()
+    {
+        RefreshCurrentAxes();
+        _animator.SetTrigger("Run");
+    }
+
     void Start()
     {
         SubscribeToEvents();
-        _currentMoveSpeed = _moveSpeed;
-        _movementDirection = 1f;
-        RefreshCurrentAxes();
     }
 
     private void OnDestroy()
@@ -47,11 +51,11 @@ public class PlayerController : MonoBehaviour, IPausable
         GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger -= RotatePlayer;
     }
 
-    public void Pause()
+    public void Pause() //find out way to stop animations when paused maybe
     {
         _currentMoveSpeed = 0f;
         _movementLocked = true;
-        _runDustParticles.Stop();
+        // _runDustParticles.Stop();
     }
 
     public void Resume()
@@ -59,7 +63,7 @@ public class PlayerController : MonoBehaviour, IPausable
         _currentMoveSpeed = _moveSpeed;
         _movementLocked = false;
         _movementDirection = 1f;
-        _runDustParticles.Play();
+        // _runDustParticles.Play();
     }
 
     private void RefreshCurrentAxes()
@@ -91,8 +95,8 @@ public class PlayerController : MonoBehaviour, IPausable
         if (UnityEngine.Input.GetKeyDown(KeyCode.A))
             GameManager.Instance.EventService.InvokePlayerToggledPlatformTriggerEvent();
 
-        UpdateMovement();
         UpdateRotation();
+        UpdateMovement();
     }
 
     public void DoJump(InputAction.CallbackContext ctx)
@@ -110,11 +114,16 @@ public class PlayerController : MonoBehaviour, IPausable
     private void UpdateMovement()
     {
         transform.position += _currentMoveSpeed * Time.deltaTime * transform.forward;
+        if (IsGrounded() == false)
+             _animator.SetBool("Jump", true);
+        if(IsGrounded() == true)
+             _animator.SetBool("Jump", false);
     }
 
     private void UpdateRotation()
     {
-        transform.forward = _movementDirection > 0f ? _currentPositiveAxis : _currentNegativeAxis;
+        if(transform.forward != Vector3.zero)
+            transform.forward = _movementDirection > 0f ? _currentPositiveAxis : _currentNegativeAxis;
     }
 
     private void RotatePlayer(RotationDirection rotationDirection)
