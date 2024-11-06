@@ -22,7 +22,7 @@ public class GamePlayingState : ManagerStates {
 
     public override void LogicUpdate()
     {
-        base.LogicUpdate();
+        _gameManager.Player.UpdatePlayer();
     }
 
     public override void PhysicsUpdate()
