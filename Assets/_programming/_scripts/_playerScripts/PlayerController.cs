@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour, IPausable
         transform.position += _currentMoveSpeed * Time.deltaTime * transform.forward;
         if (IsGrounded() == false)
              _animator.SetBool("Jump", true);
-        if(IsGrounded() == true)
+        else
              _animator.SetBool("Jump", false);
     }
 

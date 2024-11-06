@@ -131,7 +131,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3916242315315560390, guid: 00b8d8b6531132647af3d2d1a55fb5e4, type: 3}
+      - m_Target: {fileID: 2717441577461218500}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: DoTogglePlatform
         m_Mode: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
     m_ActionName: 'Adaptive_Controller_GamePad/Left_Button[/XInputControllerWindows/buttonSouth]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3916242315315560390, guid: 00b8d8b6531132647af3d2d1a55fb5e4, type: 3}
+      - m_Target: {fileID: 2717441577461218500}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: DoJump
         m_Mode: 0
