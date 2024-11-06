@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIService : MonoBehaviour {
-    [Header("Event References")] 
-    public EventService EventService;
     
     [Header("Input Reference")] 
     // public Input Input;
@@ -12,12 +10,11 @@ public class UIService : MonoBehaviour {
     [Header("UI Elements")]
     [SerializeField] private Text _collectibleText;
 
-    private void Awake() {
+    private void Start() {
         Init();
     }
     
     private void Init() {
-        EventService = new EventService();
         SubscribeToEvents();
     }
 
@@ -27,19 +24,19 @@ public class UIService : MonoBehaviour {
         UnsubscribeFromEvents();
     }
 
-    private void SubscribeToEvents() {
-        EventService.OnCollectibleCollectedTextUpdate += OnCollectibleCollectedTextUpdate;
+    private void SubscribeToEvents() { 
+        GameManager.Instance.EventService.OnCollectibleCollectedTextUpdate += UpdateUiText;
     }
 
     private void UnsubscribeFromEvents() {
-        EventService.OnCollectibleCollectedTextUpdate -= OnCollectibleCollectedTextUpdate;
-
+        GameManager.Instance.EventService.OnCollectibleCollectedTextUpdate -= UpdateUiText;
     }
 
     private void Update() {
         
     }
-    void OnCollectibleCollectedTextUpdate(string text) {
-            _collectibleText.text = text;
+    
+    void UpdateUiText(string text) {
+        _collectibleText.text = text;
     }
 }

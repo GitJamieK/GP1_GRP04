@@ -507,6 +507,7 @@ GameObject:
   - component: {fileID: 482051561}
   - component: {fileID: 482051560}
   - component: {fileID: 482051564}
+  - component: {fileID: 482051565}
   m_Layer: 0
   m_Name: Body
   m_TagString: Player
@@ -632,6 +633,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &482051565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482051559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8494cd00151d7114cad89aef09350839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AcornScore: 0
+  _moveSpeed: 0
+  _jumpForce: 1
+  _rigidbody: {fileID: 482051564}
+  _capsuleCollider: {fileID: 482051560}
+  _animator: {fileID: 1101815615}
 --- !u!1 &558810608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,7 +1430,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1101815614}
   - component: {fileID: 1101815615}
-  - component: {fileID: 1101815616}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1435,35 +1453,28 @@ Transform:
   - {fileID: 482051563}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1101815615
-MonoBehaviour:
+--- !u!95 &1101815615
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101815612}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8494cd00151d7114cad89aef09350839, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _moveSpeed: 5
-  _rigidbody: {fileID: 482051564}
-  _capsuleCollider: {fileID: 482051560}
-  _jumpForce: 1
---- !u!114 &1101815616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1101815612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68b9a809622f8a44cbe42dd6af725dc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AcornScore: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: feaab97aa5eed8c4a89871c0645d90d0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1137030540
 GameObject:
   m_ObjectHideFlags: 0
@@ -2104,7 +2115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e29e1ffff388146bfdb8fb053560cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1101815615}
+  Player: {fileID: 482051565}
 --- !u!4 &1765489661
 Transform:
   m_ObjectHideFlags: 0

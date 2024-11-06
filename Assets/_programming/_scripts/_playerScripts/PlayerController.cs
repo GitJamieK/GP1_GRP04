@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class PlayerController : MonoBehaviour, IPausable
-{
+public class PlayerController : MonoBehaviour, IPausable {
+    public int AcornScore = 0;
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpForce;
     [SerializeField] private Rigidbody _rigidbody;
