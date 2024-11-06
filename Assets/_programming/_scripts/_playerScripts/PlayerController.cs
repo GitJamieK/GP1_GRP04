@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour, IPausable
     [SerializeField] private float _jumpForce;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private CapsuleCollider _capsuleCollider;
-    [SerializeField] private ParticleSystem _runDustParticles;
+    // [SerializeField] private ParticleSystem _runDustParticles;
 
     private Quaternion _targetRotation;
     private Vector3 _currentPositiveAxis;
@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         _currentMoveSpeed = 0f;
         _movementLocked = true;
-        _runDustParticles.Stop();
+        // _runDustParticles.Stop();
     }
 
     public void Resume()
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour, IPausable
         _currentMoveSpeed = _moveSpeed;
         _movementLocked = false;
         _movementDirection = 1f;
-        _runDustParticles.Play();
+        // _runDustParticles.Play();
     }
 
     private void RefreshCurrentAxes()
