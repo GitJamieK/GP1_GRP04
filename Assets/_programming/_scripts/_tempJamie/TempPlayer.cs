@@ -5,6 +5,6 @@ namespace jamie {
     /// Basic Player class that holds data
     /// </summary>
     public class Player : MonoBehaviour {
-        public int AcornScore = 0;
+        public int acornScore = 0;
     }
 }

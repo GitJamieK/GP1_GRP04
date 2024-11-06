@@ -10,21 +10,21 @@ namespace jamie {
         Player p;
         public GameObject collectParticlePrefab;
 
-        private float bounceSpeed = 2f;
-        private float bounceHeight = 0.15f;
-        private float rotationSpeed = 30f;
+        private float _bounceSpeed = 2f;
+        private float _bounceHeight = 0.15f;
+        private float _rotationSpeed = 30f;
         
-        private Vector3 startPos;
+        private Vector3 _startPos;
 
         private void Start() {
-            startPos = transform.position;
+            _startPos = transform.position;
         }
 
         private void Update() {
-            float newY = startPos.y + Mathf.Sin(Time.time * bounceSpeed) * bounceHeight;
+            float newY = _startPos.y + Mathf.Sin(Time.time * _bounceSpeed) * _bounceHeight;
             transform.position = new Vector3(transform.position.x, newY, transform.position.z);
             
-            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.up, _rotationSpeed * Time.deltaTime);
         }
         /// <summary>
         /// Handle collision from acorn collectible to player
@@ -35,8 +35,8 @@ namespace jamie {
             p = other.gameObject.GetComponent<Player>();
 
             if (p != null) {
-                p.AcornScore++;
-                Debug.Log("Player has collected an Acorn. Acorn score: " + p.AcornScore);
+                p.acornScore++;
+                Debug.Log("Player has collected an Acorn. Acorn score: " + p.acornScore);
 
                 Instantiate(collectParticlePrefab, transform.position, Quaternion.identity);
 

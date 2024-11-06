@@ -7,7 +7,7 @@ namespace jamie {
     /// <summary>
     public class TogglePlatforms : MonoBehaviour {
         public List<GameObject> platforms = new List<GameObject>();
-        private Input input;
+        private Input _input;
         
         void Update() {
             if (UnityEngine.Input.GetKeyDown(KeyCode.T)) {
