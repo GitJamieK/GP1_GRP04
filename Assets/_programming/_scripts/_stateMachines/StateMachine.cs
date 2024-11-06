@@ -10,7 +10,7 @@ public class StateMachine : MonoBehaviour
     
     protected virtual void AddStates(){}
 
-    public void UpdateStateMachine()
+    public void Update()
     {
         currentState?.LogicUpdate();
     }

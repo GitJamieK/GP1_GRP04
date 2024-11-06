@@ -30,6 +30,7 @@ public class GameManager : StateMachine
     private void Start()
     {
         SubscribeToEvents();
+        SwitchState<GamePlayingState>();
     }
 
     private void OnDestroy()
@@ -59,10 +60,11 @@ public class GameManager : StateMachine
         states = new List<ManagerStates>();
         states.Add(new GamePausedState(this, "", ""));
         states.Add(new GamePlayingState(this, "", ""));
+        states.Add(new GameRotationState(this, "", ""));
     }
 
     private void OnPlayerEnteredWorldRotationTrigger(RotationDirection rotationDirection)
     {
-        SwitchState<GamePausedState>();
+        SwitchState<GameRotationState>();
     }
 }
