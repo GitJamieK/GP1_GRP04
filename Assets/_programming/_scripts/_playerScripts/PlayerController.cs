@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour, IPausable
         }
     }
 
-    void Update()
+    public void UpdatePlayer()
     {
         if (_movementLocked)
             return;
