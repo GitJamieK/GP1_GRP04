@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Jesper.GeneralStateMachine;
 using Jesper.PlayerStateMachine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : StateMachine
 {
@@ -15,6 +16,7 @@ public class GameManager : StateMachine
     
     public EventService EventService;
     public PlayerController Player;
+    public int NumberOfAcornsCollected;
 
     private void Awake()
     {
@@ -23,6 +25,7 @@ public class GameManager : StateMachine
         else
             Destroy(gameObject);
         
+        DontDestroyOnLoad(this);
         InitializeServices();
         CreateStates();
     }
@@ -37,17 +40,25 @@ public class GameManager : StateMachine
     {
         UnsubscribeFromEvents();
     }
-
     private void SubscribeToEvents()
     {
         EventService.OnPlayerEnteredWorldRotationTrigger += OnPlayerEnteredWorldRotationTrigger;
         EventService.OnCameraFinishedRotation += SwitchState<GamePlayingState>;
+        EventService.OnPlayerCollectedAcorn += UpdateAcorns;
+        SceneManager.activeSceneChanged += OnNewSceneChange;
     }
 
     private void UnsubscribeFromEvents()
     {
         EventService.OnPlayerEnteredWorldRotationTrigger -= OnPlayerEnteredWorldRotationTrigger;
         EventService.OnCameraFinishedRotation -= SwitchState<GamePlayingState>;
+        EventService.OnPlayerCollectedAcorn -= UpdateAcorns;
+        SceneManager.activeSceneChanged -= OnNewSceneChange;
+    }
+
+    private void OnNewSceneChange(Scene currentScene, Scene nextScene)
+    {
+        Player = FindAnyObjectByType<PlayerController>();
     }
     
     private void InitializeServices()
@@ -67,4 +78,6 @@ public class GameManager : StateMachine
     {
         SwitchState<GameRotationState>();
     }
+
+    private void UpdateAcorns() => NumberOfAcornsCollected++;
 }
