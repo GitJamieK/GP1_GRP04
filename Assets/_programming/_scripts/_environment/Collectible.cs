@@ -33,7 +33,7 @@ namespace jamie {
         void OnTriggerEnter(Collider other) {
             p = other.gameObject.GetComponent<PlayerController>();
             if (p != null) {
-                GameManager.Instance.EventService.InvokePlayerCollectedAcornEvent();
+                GameManager.Instance.EventService.InvokePlayerCollectedSeedEvent();
                 Instantiate(collectParticlePrefab, transform.position, Quaternion.identity);
                 Destroy(gameObject);
             }

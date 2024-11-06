@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerController : MonoBehaviour, IPausable
@@ -64,6 +65,11 @@ public class PlayerController : MonoBehaviour, IPausable
         _movementLocked = false;
         _movementDirection = 1f;
         // _runDustParticles.Play();
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 
     private void RefreshCurrentAxes()

@@ -6,11 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_scenes/Kiran_Test_Scene.unity
-    guid: dba39a2a8774caa4fa16162da70bc279
+    path: Assets/_scenes/Main Menu.unity
+    guid: 91a51b587f6683b48a80cb464ab40ef6
   - enabled: 1
-    path: Assets/_scenes/Ghazaleh_Scene.unity
-    guid: 948f4ff4ed2648447b653965cb74f4dd
+    path: Assets/_scenes/Daniel_Level.unity
+    guid: b954b98e58add674fa0c531af7ca2fb8
+  - enabled: 1
+    path: Assets/_scenes/Pontus Test_Scene.unity
+    guid: f1cd86ba148c6374583eee0debe01cad
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 92b426e6c92b94c4f898d9be3282dc04, type: 3}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: f7d9825f2f1bf6543948980a58f029d5, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -1,16 +1,11 @@
+using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIService : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private Text _scoreText;
+    
+    public void UpdateSeedsCollected(int seeds) => _scoreText.text = seeds.ToString();
 }

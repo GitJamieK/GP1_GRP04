@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: f7d9825f2f1bf6543948980a58f029d5, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: 375d80797c3e2b3409b6032ee3e20cb0, type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -162,7 +162,19 @@ MonoBehaviour:
     m_ActionId: cf711bc0-a4dc-4abd-83b2-1029fb160488
     m_ActionName: 'Adaptive_Controller_GamePad/Right_Button[/XInputControllerWindows/buttonEast]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2717441577461218500}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: GoToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 6589b1a1-dcc4-4ff7-9795-7669539c655e
     m_ActionName: 'Adaptive_Controller_GamePad/Pause_Button[/XInputControllerWindows/select]'
   - m_PersistentCalls:
@@ -332,43 +344,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7444830821809929541, guid: f1ec62b796be0b048a899db24d5dd727, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3234166776745314879}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f1ec62b796be0b048a899db24d5dd727, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8826947036163670194}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1ec62b796be0b048a899db24d5dd727, type: 3}
 --- !u!4 &77021840678157332 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7444830821809929541, guid: f1ec62b796be0b048a899db24d5dd727, type: 3}
   m_PrefabInstance: {fileID: 1855209523106725551}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1548797275390575614 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f1ec62b796be0b048a899db24d5dd727, type: 3}
-  m_PrefabInstance: {fileID: 1855209523106725551}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &8826947036163670194
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1548797275390575614}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b7df1d9e371c325488cbd745be4db80b, type: 3}
-  m_Controller: {fileID: 9100000, guid: 3bcf0591b72c45345ae4c73406eb9fa5, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &2176855203264846148 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f1ec62b796be0b048a899db24d5dd727, type: 3}
