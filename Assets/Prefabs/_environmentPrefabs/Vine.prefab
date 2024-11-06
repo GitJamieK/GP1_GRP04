@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4038600772239953346}
   - component: {fileID: 6330422450353471481}
   m_Layer: 3
-  m_Name: platform
+  m_Name: Vine
   m_TagString: DirectionSwap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
