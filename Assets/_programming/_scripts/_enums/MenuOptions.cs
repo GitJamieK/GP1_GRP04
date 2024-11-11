@@ -2,5 +2,9 @@
 public enum MenuOptions
 {
     START_GAME,
-    QUIT_GAME
+    SETTINGS,
+    QUIT_GAME,
+    
+    BACK,
+    TEMP
 }
