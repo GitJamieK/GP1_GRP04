@@ -11,7 +11,6 @@ public class LevelLoader : MonoBehaviour
     private void Awake()
     {
         numberOfScenes = SceneManager.sceneCountInBuildSettings;
-        Debug.Log("Scene count: " + numberOfScenes);
     }
 
     private void OnTriggerEnter(Collider other)

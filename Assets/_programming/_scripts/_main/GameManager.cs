@@ -16,7 +16,10 @@ public class GameManager : StateMachine
     
     public EventService EventService;
     public PlayerController Player;
-    public int NumberOfAcornsCollected;
+    public UIService UIService;
+    public int NumberOfSeedsCollected;
+    
+    private int _seedsAtStartOfLevel;
 
     private void Awake()
     {
@@ -32,6 +35,9 @@ public class GameManager : StateMachine
 
     private void Start()
     {
+        Player = FindAnyObjectByType<PlayerController>();
+        UIService = FindAnyObjectByType<UIService>();
+        UIService.UpdateSeedsCollected(NumberOfSeedsCollected);
         SubscribeToEvents();
         SwitchState<GamePlayingState>();
     }
@@ -44,7 +50,7 @@ public class GameManager : StateMachine
     {
         EventService.OnPlayerEnteredWorldRotationTrigger += OnPlayerEnteredWorldRotationTrigger;
         EventService.OnCameraFinishedRotation += SwitchState<GamePlayingState>;
-        EventService.OnPlayerCollectedAcorn += UpdateAcorns;
+        EventService.OnPlayerCollectedSeed += UpdateSeeds;
         SceneManager.activeSceneChanged += OnNewSceneChange;
     }
 
@@ -52,15 +58,22 @@ public class GameManager : StateMachine
     {
         EventService.OnPlayerEnteredWorldRotationTrigger -= OnPlayerEnteredWorldRotationTrigger;
         EventService.OnCameraFinishedRotation -= SwitchState<GamePlayingState>;
-        EventService.OnPlayerCollectedAcorn -= UpdateAcorns;
+        EventService.OnPlayerCollectedSeed -= UpdateSeeds;
         SceneManager.activeSceneChanged -= OnNewSceneChange;
     }
 
     private void OnNewSceneChange(Scene currentScene, Scene nextScene)
     {
         Player = FindAnyObjectByType<PlayerController>();
+        if (nextScene.buildIndex != 0 || nextScene.buildIndex == SceneManager.sceneCountInBuildSettings - 1)
+            SwitchState<GamePlayingState>();
+        else
+            NumberOfSeedsCollected = 0;
+        
+        UIService = FindAnyObjectByType<UIService>();
+        UIService.UpdateSeedsCollected(NumberOfSeedsCollected);
+        PlayerPrefs.SetInt("NumberOfSeedsCollected", NumberOfSeedsCollected);
     }
-    
     private void InitializeServices()
     {
         EventService = new EventService();
@@ -79,5 +92,9 @@ public class GameManager : StateMachine
         SwitchState<GameRotationState>();
     }
 
-    private void UpdateAcorns() => NumberOfAcornsCollected++;
+    private void UpdateSeeds()
+    {
+        NumberOfSeedsCollected++;
+        UIService.UpdateSeedsCollected(NumberOfSeedsCollected);
+    }
 }
