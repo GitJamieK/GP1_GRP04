@@ -72,6 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8494cd00151d7114cad89aef09350839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerScriptableObject: {fileID: 11400000, guid: 5b402359f2c958b4cb2e75ee69537b00, type: 2}
   _moveSpeed: 4
   _jumpForce: 12.5
   _rigidbody: {fileID: 6379639522704356938}

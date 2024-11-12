@@ -5,33 +5,42 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour, IPausable
 {
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _jumpForce;
+    [SerializeField] private PlayerScriptableObject _playerScriptableObject;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private CapsuleCollider _capsuleCollider;
     [SerializeField] private Animator _animator;
-    [SerializeField] private float _groundSphereCastDistance;
-    // [SerializeField] private ParticleSystem _runDustParticles;
 
     private Quaternion _targetRotation;
     private Vector3 _currentPositiveAxis;
     private Vector3 _currentNegativeAxis;
-    private readonly Vector3 _offsetVector = new Vector3(0.0001f, 0f, 0.0001f);
+    
     private bool _movementLocked;
-    [SerializeField] private bool _isGrounded;
+    private bool _isGrounded;
+
+    private float _moveSpeed;
+    private float _jumpForce;
+    private float _groundSphereCastDistance;
     private float _movementDirection;
     private float _currentMoveSpeed;
     
-    private readonly float groundSphereCastRadius = 0.2f;
-    private readonly string groundMask = "Ground";
+    private readonly float _groundSphereCastRadius = 0.2f;
+    private readonly string _groundMask = "Ground";
 
     public RotationDirection CurrentRotationDirection { get; private set; }
 
     private void Awake()
     {
+        InitData();
         RefreshCurrentAxes();
-        _isGrounded = false;
         _animator.SetTrigger("Run");
+    }
+
+    private void InitData()
+    {
+        _moveSpeed = _playerScriptableObject.MoveSpeed;
+        _jumpForce = _playerScriptableObject.JumpForce;
+        _groundSphereCastDistance = _playerScriptableObject.GroundSphereCastDistance;
+        _isGrounded = false;
     }
 
     private void Start()
@@ -158,7 +167,7 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         RaycastHit hitInfo;
         Vector3 center = _capsuleCollider.bounds.center;
-        _isGrounded = Physics.SphereCast(center, groundSphereCastRadius, -Vector3.up, out hitInfo, _groundSphereCastDistance,
-            LayerMask.GetMask(groundMask));
+        _isGrounded = Physics.SphereCast(center, _groundSphereCastRadius, -Vector3.up, out hitInfo, _groundSphereCastDistance,
+            LayerMask.GetMask(_groundMask));
     }
 }
