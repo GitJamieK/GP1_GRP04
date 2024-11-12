@@ -117,27 +117,6 @@ public class MainMenuUI : MonoBehaviour
                 Debug.Log("TEMP option selected in settings");
             }
         }
-        // if (_currentMenuOptionSelected == MenuOptions.START_GAME)
-        // {
-        //     if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
-        //         SceneManager.LoadScene(0);
-        //     else
-        //         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        // }
-        // else if (_currentMenuOptionSelected == MenuOptions.SETTINGS)
-        // {
-        //     _settingsContainer.gameObject.SetActive(true);
-        //     _mainContainer.gameObject.SetActive(false);
-        // }
-        // else if (_currentSettingsMenuOptionSelected == MenuOptions.BACK)
-        // {
-        //     Debug.Log("Backbutton pressed");
-        //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        // }
-        // else if (_currentSettingsMenuOptionSelected == MenuOptions.TEMP) //this temp button can be changed for accessibility setting
-        //     Debug.Log("TEMP");
-        // else
-        //     Application.Quit();
     }
 
     private void UpdateSelectorUI()
@@ -180,23 +159,5 @@ public class MainMenuUI : MonoBehaviour
                 _settingsPageTEMPPointer.gameObject.SetActive(true);
                 break;
         }
-        // if (_currentMenuOptionSelected == MenuOptions.START_GAME)
-        // {
-        //     _startGamePointer.gameObject.SetActive(true);
-        //     _quitGamePointer.gameObject.SetActive(false);
-        //     _settingsPagePointer.gameObject.SetActive(false);
-        // }
-        // else if (_currentMenuOptionSelected == MenuOptions.SETTINGS)
-        // {
-        //     _startGamePointer.gameObject.SetActive(false);
-        //     _quitGamePointer.gameObject.SetActive(false);
-        //     _settingsPagePointer.gameObject.SetActive(true);
-        // }
-        // else 
-        // {
-        //     _startGamePointer.gameObject.SetActive(false);
-        //     _quitGamePointer.gameObject.SetActive(true);
-        //     _settingsPagePointer.gameObject.SetActive(false);
-        // }
     }
 }
