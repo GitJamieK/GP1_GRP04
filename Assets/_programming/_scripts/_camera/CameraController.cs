@@ -5,8 +5,10 @@ using UnityEngine.Serialization;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private PlayerController _target;
-
     [SerializeField] private float _rotationRadius;
+    [SerializeField] private float _rotationSpeed;
+    [SerializeField] private float _yOffset;
+    [SerializeField] private float _rotationOffsetAlongXAxis;
 
     private Vector3 _offsetVector;
     private float _positionOnUnitCircle;
@@ -14,14 +16,14 @@ public class CameraController : MonoBehaviour
     private bool _rotateAroundCorner;
     private float _cameraRotationDirection;
 
-    private static float _offsetMagnitude = 5f;
+    private static float _zOffset = 5f;
     private readonly float _digitsForRotationDecimal = 1000f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _target = FindAnyObjectByType<PlayerController>();
-        _offsetVector = new Vector3(0f, 0f, -_offsetMagnitude);
+        _offsetVector = new Vector3(0f, _yOffset, -_zOffset);
         GetCamOffsetFromPlayer();
         GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger += StartRotateAround;
     }
@@ -38,8 +40,8 @@ public class CameraController : MonoBehaviour
             RotateAround();
         else
         {
-            Vector3 camPosVector = _target.gameObject.transform.position + _offsetVector;
-            transform.position = Vector3.Lerp(transform.position, camPosVector, 1f);
+            Vector3 camPosVector = _target.transform.position + _offsetVector;
+            transform.position = camPosVector;
         }
     }
 
@@ -48,11 +50,18 @@ public class CameraController : MonoBehaviour
         float finalPosCheck;
         _positionOnUnitCircle = Mathf.Round(_positionOnUnitCircle * _digitsForRotationDecimal) / _digitsForRotationDecimal;
         _finalPosOnRotation = Mathf.Round(_finalPosOnRotation * _digitsForRotationDecimal) / _digitsForRotationDecimal;
-        _positionOnUnitCircle += Time.deltaTime * Mathf.Sign(_cameraRotationDirection);
+        
+        _positionOnUnitCircle += Time.deltaTime * _rotationSpeed * Mathf.Sign(_cameraRotationDirection);
         Vector3 currentRotPosition =
             new Vector3(Mathf.Cos(_positionOnUnitCircle), 0f, Mathf.Sin(_positionOnUnitCircle)) * _rotationRadius;
         transform.position += currentRotPosition * Time.deltaTime;
+        
+        Vector3 camPositionInWorldSpaceWithHeight = transform.position;
+        camPositionInWorldSpaceWithHeight.y = _target.transform.position.y + _yOffset;
+        
+        transform.position = camPositionInWorldSpaceWithHeight;
         transform.LookAt(_target.gameObject.transform.position);
+        transform.eulerAngles = new Vector3(_rotationOffsetAlongXAxis, transform.eulerAngles.y, transform.eulerAngles.z);
 
         if (_finalPosOnRotation == 0f)
             finalPosCheck = _positionOnUnitCircle;
@@ -73,12 +82,12 @@ public class CameraController : MonoBehaviour
         {
             if (_target.CurrentRotationDirection == RotationDirection.FORWARD)
             {
-                _offsetMagnitude = _offsetMagnitude > 0f ? _offsetMagnitude * -1f : _offsetMagnitude;
+                _zOffset = _zOffset > 0f ? _zOffset * -1f : _zOffset;
                 transform.forward = Vector3.forward;
             }
             else
             {
-                _offsetMagnitude = _offsetMagnitude < 0f ? _offsetMagnitude * -1f : _offsetMagnitude;
+                _zOffset = _zOffset < 0f ? _zOffset * -1f : _zOffset;
                 transform.forward = -Vector3.forward;
             }
         }
@@ -86,17 +95,17 @@ public class CameraController : MonoBehaviour
         {
             if (_target.CurrentRotationDirection == RotationDirection.FORWARD)
             {
-                _offsetMagnitude = _offsetMagnitude < 0f ? _offsetMagnitude * -1f : _offsetMagnitude;
+                _zOffset = _zOffset < 0f ? _zOffset * -1f : _zOffset;
                 transform.forward = -Vector3.forward;
             }
             else
             {
-                _offsetMagnitude = _offsetMagnitude > 0f ? _offsetMagnitude * -1f : _offsetMagnitude;
+                _zOffset = _zOffset > 0f ? _zOffset * -1f : _zOffset;
                 transform.forward = Vector3.forward;
             }
         }
 
-        return _offsetMagnitude;
+        return _zOffset;
     }
 
     private float GetOffsetMagnitudeAlongXAxis(float dotProductOnZAxis)
@@ -105,12 +114,12 @@ public class CameraController : MonoBehaviour
         {
             if (_target.CurrentRotationDirection == RotationDirection.FORWARD)
             {
-                _offsetMagnitude = _offsetMagnitude < 0f ? _offsetMagnitude * -1f : _offsetMagnitude;
+                _zOffset = _zOffset < 0f ? _zOffset * -1f : _zOffset;
                 transform.forward = -Vector3.right;
             }
             else
             {
-                _offsetMagnitude = _offsetMagnitude > 0f ? _offsetMagnitude * -1f : _offsetMagnitude;
+                _zOffset = _zOffset > 0f ? _zOffset * -1f : _zOffset;
                 transform.forward = Vector3.right;
             }
         }
@@ -119,17 +128,17 @@ public class CameraController : MonoBehaviour
         {
             if (_target.CurrentRotationDirection == RotationDirection.FORWARD)
             {
-                _offsetMagnitude = _offsetMagnitude > 0f ? _offsetMagnitude * -1f : _offsetMagnitude;
+                _zOffset = _zOffset > 0f ? _zOffset * -1f : _zOffset;
                 transform.forward = Vector3.right;
             }
             else
             {
-                _offsetMagnitude = _offsetMagnitude < 0f ? _offsetMagnitude * -1f : _offsetMagnitude;
+                _zOffset = _zOffset < 0f ? _zOffset * -1f : _zOffset;
                 transform.forward = -Vector3.right;
             }
         }
 
-        return _offsetMagnitude;
+        return _zOffset;
     }
 
     private void GetCamOffsetFromPlayer()
@@ -138,11 +147,13 @@ public class CameraController : MonoBehaviour
         float dotProductOnZAxis = Vector3.Dot(_target.gameObject.transform.forward, Vector3.forward);
 
         if (dotProductOnXAxis > 0.01f || dotProductOnXAxis < -0.01f)
-            _offsetVector = new Vector3(0f, 0f, GetOffsetMagnitudeAlongZAxis(dotProductOnXAxis));
+            _offsetVector = new Vector3(0f, _yOffset, GetOffsetMagnitudeAlongZAxis(dotProductOnXAxis));
         else if (dotProductOnZAxis > 0.01f || dotProductOnZAxis < -0.01f)
-            _offsetVector = new Vector3(GetOffsetMagnitudeAlongXAxis(dotProductOnZAxis), 0f, 0f);
+            _offsetVector = new Vector3(GetOffsetMagnitudeAlongXAxis(dotProductOnZAxis), _yOffset, 0f);
+        
+        transform.eulerAngles = new Vector3(_rotationOffsetAlongXAxis, transform.eulerAngles.y, transform.eulerAngles.z);
     }
-
+    
     private void StartRotateAround(RotationDirection rotationDirection)
     {
         if (rotationDirection == RotationDirection.FORWARD)

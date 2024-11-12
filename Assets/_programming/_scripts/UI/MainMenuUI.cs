@@ -82,28 +82,62 @@ public class MainMenuUI : MonoBehaviour
 
     public void DoSelection()
     {
-        if (_currentMenuOptionSelected == MenuOptions.START_GAME)
+        if (_mainContainer.activeSelf)
         {
-            if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
-                SceneManager.LoadScene(0);
-            else
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            if (_currentMenuOptionSelected == MenuOptions.START_GAME)
+            {
+                if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
+                    SceneManager.LoadScene(0);
+                else
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+            else if (_currentMenuOptionSelected == MenuOptions.SETTINGS)
+            {
+                _settingsContainer.SetActive(true);
+                _mainContainer.SetActive(false);
+                currentSettingsOption = 0;
+                UpdateSelectorUI();
+            }
+            else if (_currentMenuOptionSelected == MenuOptions.QUIT_GAME)
+            {
+                Application.Quit();
+            }
         }
-        else if (_currentMenuOptionSelected == MenuOptions.SETTINGS)
+        else if (_settingsContainer.activeSelf)
         {
-            _settingsContainer.gameObject.SetActive(true);
-            _mainContainer.gameObject.SetActive(false);
             if (_currentSettingsMenuOptionSelected == MenuOptions.BACK)
             {
-                Debug.Log("Backbutton pressed");
-                _settingsContainer.gameObject.SetActive(false);
-                _mainContainer.gameObject.SetActive(true);
+                // Reload the main menu by reloading the scene
+                Debug.Log("Back button pressed - Reloading main menu scene");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
             else if (_currentSettingsMenuOptionSelected == MenuOptions.TEMP)
-                Debug.Log("TEMP");
+            {
+                //TEMP setting (can be used for future accessibility settings)
+                Debug.Log("TEMP option selected in settings");
+            }
         }
-        else
-            Application.Quit();
+        // if (_currentMenuOptionSelected == MenuOptions.START_GAME)
+        // {
+        //     if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
+        //         SceneManager.LoadScene(0);
+        //     else
+        //         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        // }
+        // else if (_currentMenuOptionSelected == MenuOptions.SETTINGS)
+        // {
+        //     _settingsContainer.gameObject.SetActive(true);
+        //     _mainContainer.gameObject.SetActive(false);
+        // }
+        // else if (_currentSettingsMenuOptionSelected == MenuOptions.BACK)
+        // {
+        //     Debug.Log("Backbutton pressed");
+        //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // }
+        // else if (_currentSettingsMenuOptionSelected == MenuOptions.TEMP) //this temp button can be changed for accessibility setting
+        //     Debug.Log("TEMP");
+        // else
+        //     Application.Quit();
     }
 
     private void UpdateSelectorUI()

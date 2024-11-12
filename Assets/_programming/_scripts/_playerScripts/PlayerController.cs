@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour, IPausable
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private CapsuleCollider _capsuleCollider;
     [SerializeField] private Animator _animator;
+    [SerializeField] private float _groundSphereCastDistance;
     // [SerializeField] private ParticleSystem _runDustParticles;
 
     private Quaternion _targetRotation;
@@ -17,22 +18,23 @@ public class PlayerController : MonoBehaviour, IPausable
     private Vector3 _currentNegativeAxis;
     private readonly Vector3 _offsetVector = new Vector3(0.0001f, 0f, 0.0001f);
     private bool _movementLocked;
+    [SerializeField] private bool _isGrounded;
     private float _movementDirection;
     private float _currentMoveSpeed;
-
-    private readonly float groundSphereCastDistance = 0.9f;
+    
     private readonly float groundSphereCastRadius = 0.2f;
     private readonly string groundMask = "Ground";
 
     public RotationDirection CurrentRotationDirection { get; private set; }
 
-    void Awake()
+    private void Awake()
     {
         RefreshCurrentAxes();
+        _isGrounded = false;
         _animator.SetTrigger("Run");
     }
 
-    void Start()
+    private void Start()
     {
         SubscribeToEvents();
     }
@@ -56,7 +58,7 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         _currentMoveSpeed = 0f;
         _movementLocked = true;
-        // _runDustParticles.Stop();
+        _rigidbody.useGravity = false;
     }
 
     public void Resume()
@@ -64,7 +66,7 @@ public class PlayerController : MonoBehaviour, IPausable
         _currentMoveSpeed = _moveSpeed;
         _movementLocked = false;
         _movementDirection = 1f;
-        // _runDustParticles.Play();
+        _rigidbody.useGravity = true;
     }
 
     public void GoToMainMenu()
@@ -94,20 +96,21 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         if (_movementLocked)
             return;
-
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Space) && _isGrounded)
             MakePlayerJump();
 
         if (UnityEngine.Input.GetKeyDown(KeyCode.A))
             GameManager.Instance.EventService.InvokePlayerToggledPlatformTriggerEvent();
 
+        DoGroundCheck();
         UpdateRotation();
         UpdateMovement();
     }
 
     public void DoJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed && IsGrounded())
+        if (ctx.performed && _isGrounded)
             MakePlayerJump();
     }
 
@@ -120,10 +123,10 @@ public class PlayerController : MonoBehaviour, IPausable
     private void UpdateMovement()
     {
         transform.position += _currentMoveSpeed * Time.deltaTime * transform.forward;
-        if (IsGrounded() == false)
-             _animator.SetBool("Jump", true);
+        if (!_isGrounded)
+            _animator.SetBool("Jump", true);
         else
-             _animator.SetBool("Jump", false);
+            _animator.SetBool("Jump", false);
     }
 
     private void UpdateRotation()
@@ -151,11 +154,11 @@ public class PlayerController : MonoBehaviour, IPausable
         _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
     }
 
-    private bool IsGrounded()
+    private void DoGroundCheck()
     {
         RaycastHit hitInfo;
         Vector3 center = _capsuleCollider.bounds.center;
-        return Physics.SphereCast(center, groundSphereCastRadius, -Vector3.up, out hitInfo, groundSphereCastDistance,
+        _isGrounded = Physics.SphereCast(center, groundSphereCastRadius, -Vector3.up, out hitInfo, _groundSphereCastDistance,
             LayerMask.GetMask(groundMask));
     }
 }

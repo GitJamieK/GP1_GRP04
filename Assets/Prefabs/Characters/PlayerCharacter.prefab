@@ -77,6 +77,8 @@ MonoBehaviour:
   _rigidbody: {fileID: 6379639522704356938}
   _capsuleCollider: {fileID: 6573818556616505843}
   _animator: {fileID: 877560061743112399}
+  _groundSphereCastDistance: 1
+  _isGrounded: 0
 --- !u!54 &6379639522704356938
 Rigidbody:
   m_ObjectHideFlags: 0
