@@ -12,7 +12,7 @@ public class GamePausedState : ManagerStates
     public override void OnEnter()
     {
         base.OnEnter();
-        _gameManager.Player.Pause();
+        _gameManager.Player?.Pause();
     }
 
     public override void OnExit()

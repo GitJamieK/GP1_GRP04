@@ -12,7 +12,7 @@ public class GamePlayingState : ManagerStates {
     public override void OnEnter()
     {
         base.OnEnter();
-        _gameManager.Player.Resume();
+        _gameManager.Player?.Resume();
     }
 
     public override void OnExit()
@@ -22,7 +22,7 @@ public class GamePlayingState : ManagerStates {
 
     public override void LogicUpdate()
     {
-        _gameManager.Player.UpdatePlayer();
+        _gameManager.Player?.UpdatePlayer();
     }
 
     public override void PhysicsUpdate()

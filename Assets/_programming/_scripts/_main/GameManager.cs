@@ -68,7 +68,10 @@ public class GameManager : StateMachine
         if (nextScene.buildIndex != 0 || nextScene.buildIndex == SceneManager.sceneCountInBuildSettings - 1)
             SwitchState<GamePlayingState>();
         else
+        {
             NumberOfSeedsCollected = 0;
+            SwitchState<GamePausedState>();
+        }
         
         UIService = FindAnyObjectByType<UIService>();
         UIService.UpdateSeedsCollected(NumberOfSeedsCollected);
