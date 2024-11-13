@@ -15,15 +15,25 @@ public class MainMenuUI : MonoBehaviour
     
     //inside settings container
     [SerializeField] private Image _settingsPageBackPointer;
-    [SerializeField] private Image _settingsPageTEMPPointer;
+    [SerializeField] private Image _settingsPageFullscreenPointer;
+    [SerializeField] private Image _settingsPageVolumePointer;
+    
+    //inside sound container
+    [SerializeField] private Image _soundSettingsBackPointer;
+    [SerializeField] private Image _soundSettingsVolume100Pointer;
+    [SerializeField] private Image _soundSettingsVolume50Pointer;
+    [SerializeField] private Image _soundSettingsVolume0Pointer;
     
     [SerializeField] private GameObject _settingsContainer;
     [SerializeField] private GameObject _mainContainer;
+    [SerializeField] private GameObject _volumeContainer;
     
     private MenuOptions _currentMenuOptionSelected;
     private MenuOptions _currentSettingsMenuOptionSelected;
+    private MenuOptions _currentVolumeMenuOptionSelected;
     private int currentOption = 0;
     private int currentSettingsOption = 0;
+    private int currentVolumeOption = 0;
 
     private void Start()
     {
@@ -33,7 +43,8 @@ public class MainMenuUI : MonoBehaviour
         _currentMenuOptionSelected = MenuOptions.START_GAME;
         
         _settingsPageBackPointer.gameObject.SetActive(true);
-        _settingsPageTEMPPointer.gameObject.SetActive(false);
+        _settingsPageFullscreenPointer.gameObject.SetActive(false);
+        _settingsPageVolumePointer.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -42,10 +53,13 @@ public class MainMenuUI : MonoBehaviour
         {
             currentOption++;
             currentSettingsOption++;
+            currentVolumeOption++;
             if(currentOption >= 3)
                 currentOption = 0;
-            if (currentSettingsOption >= 2)
+            if (currentSettingsOption >= 3)
                 currentSettingsOption = 0;
+            if (currentVolumeOption >= 4)
+                currentVolumeOption = 0;
             
             CycleOptions();
         }
@@ -73,11 +87,30 @@ public class MainMenuUI : MonoBehaviour
         switch (currentSettingsOption)
         {
             case 0:
-                _currentSettingsMenuOptionSelected = MenuOptions.BACK;
+                _currentSettingsMenuOptionSelected = MenuOptions.SETTINGS_BACK;
                 break;
                 
             case 1:
                 _currentSettingsMenuOptionSelected = MenuOptions.FULLSCREEN;
+                break;
+            case 2:
+                _currentSettingsMenuOptionSelected = MenuOptions.SOUND;
+                break;
+        }
+
+        switch (currentVolumeOption)
+        {
+            case 0:
+                _currentVolumeMenuOptionSelected = MenuOptions.VOLUME_BACK;
+                break;
+            case 1:
+                _currentVolumeMenuOptionSelected = MenuOptions.VOLUME_100;
+                break;
+            case 2:
+                _currentVolumeMenuOptionSelected = MenuOptions.VOLUME_50;
+                break;
+            case 3:
+                _currentVolumeMenuOptionSelected = MenuOptions.VOLUME_0;
                 break;
         }
         UpdateSelectorUI();
@@ -108,7 +141,7 @@ public class MainMenuUI : MonoBehaviour
         }
         else if (_settingsContainer.activeSelf)
         {
-            if (_currentSettingsMenuOptionSelected == MenuOptions.BACK)
+            if (_currentSettingsMenuOptionSelected == MenuOptions.SETTINGS_BACK)
             {
                 // Reload the main menu by reloading the scene
                 Debug.Log("Back button pressed - Reloading main menu scene");
@@ -124,6 +157,39 @@ public class MainMenuUI : MonoBehaviour
                     Debug.Log("Toggled fullscreen mode to: " + Screen.fullScreen);
                 #endif
             }
+            else if (_currentSettingsMenuOptionSelected == MenuOptions.SOUND)
+            {
+                _volumeContainer.SetActive(true);
+                _settingsContainer.SetActive(false);
+                currentVolumeOption = 0; //start at 100% volume
+                UpdateSelectorUI();
+            }
+        }
+        else if (_volumeContainer.activeSelf)
+        {
+            if (_currentVolumeMenuOptionSelected == MenuOptions.VOLUME_BACK)
+            {
+                Debug.Log("Back button pressed - Reloading main menu scene");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            if (_currentVolumeMenuOptionSelected == MenuOptions.VOLUME_100)
+            {
+                AudioListener.volume = 1.0f;
+                Debug.Log("Volume set to 100%");
+            }
+            else if (_currentVolumeMenuOptionSelected == MenuOptions.VOLUME_50)
+            {
+                AudioListener.volume = 0.5f;
+                Debug.Log("Volume set to 50%");
+            }
+            else if (_currentVolumeMenuOptionSelected == MenuOptions.VOLUME_0)
+            {
+                AudioListener.volume = 0.0f;
+                Debug.Log("Volume set to 0%");
+            }
+            //_volumeContainer.SetActive(false);
+            //_settingsContainer.SetActive(true);
+            //UpdateSelectorUI();
         }
     }
 
@@ -156,16 +222,59 @@ public class MainMenuUI : MonoBehaviour
         switch (currentSettingsOption)
         {
             case 0:
-                _currentSettingsMenuOptionSelected = MenuOptions.BACK;
+                _currentSettingsMenuOptionSelected = MenuOptions.SETTINGS_BACK;
                 _settingsPageBackPointer.gameObject.SetActive(true);
-                _settingsPageTEMPPointer.gameObject.SetActive(false);
+                _settingsPageFullscreenPointer.gameObject.SetActive(false);
+                _settingsPageVolumePointer.gameObject.SetActive(false);
                 break;
             
             case 1:
                 _currentSettingsMenuOptionSelected = MenuOptions.FULLSCREEN;
                 _settingsPageBackPointer.gameObject.SetActive(false);
-                _settingsPageTEMPPointer.gameObject.SetActive(true);
+                _settingsPageFullscreenPointer.gameObject.SetActive(true);
+                _settingsPageVolumePointer.gameObject.SetActive(false);
                 break;
+            case 2:
+                _currentSettingsMenuOptionSelected = MenuOptions.SOUND;
+                _settingsPageBackPointer.gameObject.SetActive(false);
+                _settingsPageFullscreenPointer.gameObject.SetActive(false);
+                _settingsPageVolumePointer.gameObject.SetActive(true);
+                break;
+        }
+
+        switch (currentVolumeOption)
+        {
+            case 0:
+                _currentVolumeMenuOptionSelected = MenuOptions.VOLUME_BACK;
+                _soundSettingsBackPointer.gameObject.SetActive(true);
+                _soundSettingsVolume100Pointer.gameObject.SetActive(false);
+                _soundSettingsVolume50Pointer.gameObject.SetActive(false);
+                _soundSettingsVolume0Pointer.gameObject.SetActive(false);
+                break;
+            case 1:
+                _currentVolumeMenuOptionSelected = MenuOptions.VOLUME_100;
+                _soundSettingsBackPointer.gameObject.SetActive(false);
+                _soundSettingsVolume100Pointer.gameObject.SetActive(true);
+                _soundSettingsVolume50Pointer.gameObject.SetActive(false);
+                _soundSettingsVolume0Pointer.gameObject.SetActive(false);
+                break;
+            
+            case 2:
+                _currentVolumeMenuOptionSelected = MenuOptions.VOLUME_50;
+                _soundSettingsBackPointer.gameObject.SetActive(false);
+                _soundSettingsVolume100Pointer.gameObject.SetActive(false);
+                _soundSettingsVolume50Pointer.gameObject.SetActive(true);
+                _soundSettingsVolume0Pointer.gameObject.SetActive(false);
+                break;
+
+            case 3:
+                _currentVolumeMenuOptionSelected = MenuOptions.VOLUME_0;
+                _soundSettingsBackPointer.gameObject.SetActive(false);
+                _soundSettingsVolume100Pointer.gameObject.SetActive(false);
+                _soundSettingsVolume50Pointer.gameObject.SetActive(false);
+                _soundSettingsVolume0Pointer.gameObject.SetActive(true);
+                break;
+                
         }
     }
     
