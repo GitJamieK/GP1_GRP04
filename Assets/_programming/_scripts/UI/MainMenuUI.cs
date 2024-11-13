@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -74,7 +77,7 @@ public class MainMenuUI : MonoBehaviour
                 break;
                 
             case 1:
-                _currentSettingsMenuOptionSelected = MenuOptions.TEMP;
+                _currentSettingsMenuOptionSelected = MenuOptions.FULLSCREEN;
                 break;
         }
         UpdateSelectorUI();
@@ -111,10 +114,15 @@ public class MainMenuUI : MonoBehaviour
                 Debug.Log("Back button pressed - Reloading main menu scene");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
-            else if (_currentSettingsMenuOptionSelected == MenuOptions.TEMP)
+            else if (_currentSettingsMenuOptionSelected == MenuOptions.FULLSCREEN)
             {
-                //TEMP setting (can be used for future accessibility settings)
-                Debug.Log("TEMP option selected in settings");
+                #if UNITY_EDITOR
+                    ToggleMaximizeGameViewInEditor();
+                    Debug.Log("Toggled Game view maximization in the Editor.");
+                #else
+                    Screen.fullScreen = !Screen.fullScreen;
+                    Debug.Log("Toggled fullscreen mode to: " + Screen.fullScreen);
+                #endif
             }
         }
     }
@@ -154,10 +162,21 @@ public class MainMenuUI : MonoBehaviour
                 break;
             
             case 1:
-                _currentSettingsMenuOptionSelected = MenuOptions.TEMP;
+                _currentSettingsMenuOptionSelected = MenuOptions.FULLSCREEN;
                 _settingsPageBackPointer.gameObject.SetActive(false);
                 _settingsPageTEMPPointer.gameObject.SetActive(true);
                 break;
         }
     }
+    
+    #if UNITY_EDITOR
+    private void ToggleMaximizeGameViewInEditor()
+    {
+        System.Type gameViewType = typeof(Editor).Assembly.GetType("UnityEditor.GameView");
+        EditorWindow gameView = EditorWindow.GetWindow(gameViewType);
+        
+        // Toggle the maximized property
+        gameView.maximized = !gameView.maximized;
+    }
+    #endif
 }

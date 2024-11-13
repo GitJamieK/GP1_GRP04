@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 19433943}
   - component: {fileID: 19433942}
   m_Layer: 5
-  m_Name: PointerLocation2 (TEMP)
+  m_Name: PointerLocation2 (FULLSCREEN)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1738,7 +1738,7 @@ GameObject:
   - component: {fileID: 1424301122}
   - component: {fileID: 1424301121}
   m_Layer: 5
-  m_Name: TEMP (can be accessibility)
+  m_Name: Fullscreen Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2702,7 +2702,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'TEMP
+  m_text: 'Fullscreen/
+
+    Windowed
 
 '
   m_isRightToLeft: 0

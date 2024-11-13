@@ -5,5 +5,5 @@ public enum MenuOptions
     SETTINGS,
     QUIT_GAME,
     BACK,
-    TEMP
+    FULLSCREEN
 }
