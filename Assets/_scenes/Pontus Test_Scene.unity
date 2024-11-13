@@ -988,6 +988,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0516b2249a93cf41ae76b61e280cf14, type: 3}
+--- !u!114 &295875924 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1911691477945259661, guid: a0516b2249a93cf41ae76b61e280cf14, type: 3}
+  m_PrefabInstance: {fileID: 295875923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8494cd00151d7114cad89aef09350839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &302409774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4128,7 +4139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e29e1ffff388146bfdb8fb053560cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1717359193}
+  TimeScale: 1
+  Player: {fileID: 295875924}
   UIService: {fileID: 0}
   NumberOfSeedsCollected: 0
 --- !u!4 &1371176569
@@ -5118,17 +5130,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3829f811bad01ea41bb5817436ca36f7, type: 3}
---- !u!114 &1717359193 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2717441577461218500, guid: a0516b2249a93cf41ae76b61e280cf14, type: 3}
-  m_PrefabInstance: {fileID: 295875923}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8494cd00151d7114cad89aef09350839, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1729188991
 PrefabInstance:
   m_ObjectHideFlags: 0

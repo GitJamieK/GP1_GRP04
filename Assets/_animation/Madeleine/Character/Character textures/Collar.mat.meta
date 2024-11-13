@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/_animation/Madeleine/Character/Character textures/Collar.mat.meta
 guid: b00ba0d7728ccf944abc8fb251d36214
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
-========
-guid: 49107a72a53c8c046bbe22d309be3ccf
-NativeFormatImporter:
-  externalObjects: {}
-  mainObjectFileID: 11400000
->>>>>>>> Jesper:Assets/UI Toolkit/PanelSettings.asset.meta
   userData: 
   assetBundleName: 
   assetBundleVariant: 

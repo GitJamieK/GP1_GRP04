@@ -1524,6 +1524,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f905635339c7e214e910468d264c8416, type: 3}
+--- !u!114 &622102664 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1911691477945259661, guid: a0516b2249a93cf41ae76b61e280cf14, type: 3}
+  m_PrefabInstance: {fileID: 295875923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8494cd00151d7114cad89aef09350839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &732409161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2401,7 +2412,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e29e1ffff388146bfdb8fb053560cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1717359193}
+  TimeScale: 1
+  Player: {fileID: 622102664}
   UIService: {fileID: 0}
   NumberOfSeedsCollected: 0
 --- !u!4 &1371176569
@@ -3248,17 +3260,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1717359193 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2717441577461218500, guid: a0516b2249a93cf41ae76b61e280cf14, type: 3}
-  m_PrefabInstance: {fileID: 295875923}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8494cd00151d7114cad89aef09350839, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1732631871
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4372,7 +4373,7 @@ PrefabInstance:
     - target: {fileID: 2897568465987121439, guid: f38fc61c48898544bb6da4e0651e7af6, type: 3}
       propertyPath: _target
       value: 
-      objectReference: {fileID: 1717359193}
+      objectReference: {fileID: 0}
     - target: {fileID: 2897568465987121439, guid: f38fc61c48898544bb6da4e0651e7af6, type: 3}
       propertyPath: _rotationOffsetAlongXAxis
       value: 5

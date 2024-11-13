@@ -3012,6 +3012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e29e1ffff388146bfdb8fb053560cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TimeScale: 1
   Player: {fileID: 0}
   UIService: {fileID: 0}
   NumberOfSeedsCollected: 0

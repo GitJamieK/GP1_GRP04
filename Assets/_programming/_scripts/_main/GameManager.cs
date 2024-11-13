@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : StateMachine
 {
+    public float TimeScale;
     private static GameManager instance;
 
     public static GameManager Instance
@@ -31,6 +32,7 @@ public class GameManager : StateMachine
         DontDestroyOnLoad(this);
         InitializeServices();
         CreateStates();
+        Time.timeScale = TimeScale;
     }
 
     private void Start()
@@ -39,7 +41,7 @@ public class GameManager : StateMachine
         UIService = FindAnyObjectByType<UIService>();
         UIService.UpdateSeedsCollected(NumberOfSeedsCollected);
         SubscribeToEvents();
-        SwitchState<GamePlayingState>();
+        SwitchState<GamePausedState>();
     }
 
     private void OnDestroy()
@@ -51,6 +53,7 @@ public class GameManager : StateMachine
         EventService.OnPlayerEnteredWorldRotationTrigger += OnPlayerEnteredWorldRotationTrigger;
         EventService.OnCameraFinishedRotation += SwitchState<GamePlayingState>;
         EventService.OnPlayerCollectedSeed += UpdateSeeds;
+        EventService.OnPlayerFinishedEnteringLevel += SwitchState<GamePlayingState>;
         SceneManager.activeSceneChanged += OnNewSceneChange;
     }
 
@@ -59,6 +62,7 @@ public class GameManager : StateMachine
         EventService.OnPlayerEnteredWorldRotationTrigger -= OnPlayerEnteredWorldRotationTrigger;
         EventService.OnCameraFinishedRotation -= SwitchState<GamePlayingState>;
         EventService.OnPlayerCollectedSeed -= UpdateSeeds;
+        EventService.OnPlayerFinishedEnteringLevel -= SwitchState<GamePlayingState>;
         SceneManager.activeSceneChanged -= OnNewSceneChange;
     }
 
@@ -68,7 +72,10 @@ public class GameManager : StateMachine
         if (nextScene.buildIndex != 0 || nextScene.buildIndex == SceneManager.sceneCountInBuildSettings - 1)
             SwitchState<GamePlayingState>();
         else
+        {
             NumberOfSeedsCollected = 0;
+            SwitchState<GamePausedState>();
+        }
         
         UIService = FindAnyObjectByType<UIService>();
         UIService.UpdateSeedsCollected(NumberOfSeedsCollected);

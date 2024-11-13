@@ -1,41 +1,107 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Jesper.PlayerStateMachine;
 
 
 public class PlayerController : MonoBehaviour, IPausable
 {
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _jumpForce;
+    
+    private PlayerStates _currentState;
+    
+    public PlayerIdleState IdleState;
+    public PlayerRunState RunState;
+    public PlayerJumpState JumpState;
+    
+    [SerializeField] private NewPlayerScriptableObject _playerScriptableObject;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private CapsuleCollider _capsuleCollider;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private float _groundSphereCastDistance;
-    // [SerializeField] private ParticleSystem _runDustParticles;
+    public Animator _animator;
 
     private Quaternion _targetRotation;
     private Vector3 _currentPositiveAxis;
     private Vector3 _currentNegativeAxis;
-    private readonly Vector3 _offsetVector = new Vector3(0.0001f, 0f, 0.0001f);
+    
     private bool _movementLocked;
-    [SerializeField] private bool _isGrounded;
+    private bool _isGrounded;
+
+    private float _moveSpeed;
+    private float _upwardJumpForce;
+    private float _downwardJumpForce;
+    private float _velocity;
+    private float _groundSphereCastDistance;
     private float _movementDirection;
     private float _currentMoveSpeed;
     
-    private readonly float groundSphereCastRadius = 0.2f;
-    private readonly string groundMask = "Ground";
+    private readonly float _groundSphereCastRadius = 0.2f;
+    private readonly string _groundMask = "Ground";
 
+    public Rigidbody PlayerRigidbody{get{ return _rigidbody;} set {_rigidbody = value;}}
+
+    public CapsuleCollider PlayerCapsuleCollider {
+        get{return _capsuleCollider;} set {_capsuleCollider = value;} }
+    public bool MovementLocked { get; private set; }
+    
+    public bool IsGrounded {
+        get { return _isGrounded; } set { _isGrounded = value; }
+    }
+
+    public float CurrentMoveSpeed {
+        get { return _currentMoveSpeed; } set{ _currentMoveSpeed = value;}
+    }
+
+    public float MovementDirection {
+        get { return _movementDirection; } set{ _movementDirection = value;} }
+
+    public float UpwardJumpForce {
+        get { return _upwardJumpForce; } set{ _upwardJumpForce = value;}
+    }
+    
+    public float DownwardJumpForce {
+        get { return _downwardJumpForce; } set{ _downwardJumpForce = value;}
+    }
+    public float Velocity {
+        get { return _velocity; } set{ _velocity = value;}
+    }
+    
+    public Vector3 CurrentPositiveAxis {
+        get { return _currentPositiveAxis;} set{ _currentPositiveAxis = value;} 
+    }
+
+    public Vector3 CurrentNegativeAxis { 
+        get { return _currentNegativeAxis; } set { _currentNegativeAxis = value; }
+        
+    }
+    
     public RotationDirection CurrentRotationDirection { get; private set; }
 
     private void Awake()
     {
+        InitData();
         RefreshCurrentAxes();
+    }
+
+    private void InitData()
+    {
+        _moveSpeed = _playerScriptableObject.MoveSpeed;
+        _upwardJumpForce = _playerScriptableObject.UpwardJumpForce;
+        _downwardJumpForce = _playerScriptableObject.DownwardJumpForce;
+        _velocity = _playerScriptableObject.Velocity;
+        _groundSphereCastDistance = _playerScriptableObject.GroundSphereCastDistance;
         _isGrounded = false;
-        _animator.SetTrigger("Run");
     }
 
     private void Start()
     {
+        _currentState = new PlayerStates();
+        // IdleState = new PlayerIdleState(this, "idle");
+        RunState = new PlayerRunState(this, "Run");
+        JumpState = new PlayerJumpState(this, "Jump");
+
+        _currentState = RunState;
+        _currentState.OnEnter();
+        _rigidbody.useGravity = true;
+        
         SubscribeToEvents();
     }
 
@@ -53,9 +119,33 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger -= RotatePlayer;
     }
+    
+    public void UpdatePlayer()
+    {
+        _currentState.LogicUpdate();
+        if (Input.GetKeyDown(KeyCode.A))
+            GameManager.Instance.EventService.InvokePlayerToggledPlatformTriggerEvent();
+        
+        _moveSpeed = _playerScriptableObject.MoveSpeed;
+        _upwardJumpForce = _playerScriptableObject.UpwardJumpForce;
+        _downwardJumpForce = _playerScriptableObject.DownwardJumpForce;
+        _velocity = _playerScriptableObject.Velocity;
+        _groundSphereCastDistance = _playerScriptableObject.GroundSphereCastDistance;
+        
+        UpdateRotation();
+        DoGroundCheck();
+    }
+
+    public void PhysicsUpdate()
+    {
+        _currentState.PhysicsUpdate();
+    }
 
     public void Pause() //find out way to stop animations when paused maybe
     {
+        _upwardJumpForce = 0f;
+        _downwardJumpForce = 0f;
+        _velocity = 0f;
         _currentMoveSpeed = 0f;
         _movementLocked = true;
         _rigidbody.useGravity = false;
@@ -63,6 +153,9 @@ public class PlayerController : MonoBehaviour, IPausable
 
     public void Resume()
     {
+        _upwardJumpForce = _playerScriptableObject.UpwardJumpForce;
+        _downwardJumpForce = _playerScriptableObject.DownwardJumpForce;
+        _velocity = _playerScriptableObject.Velocity;
         _currentMoveSpeed = _moveSpeed;
         _movementLocked = false;
         _movementDirection = 1f;
@@ -92,26 +185,11 @@ public class PlayerController : MonoBehaviour, IPausable
         }
     }
 
-    public void UpdatePlayer()
-    {
-        if (_movementLocked)
-            return;
-        
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Space) && _isGrounded)
-            MakePlayerJump();
-
-        if (UnityEngine.Input.GetKeyDown(KeyCode.A))
-            GameManager.Instance.EventService.InvokePlayerToggledPlatformTriggerEvent();
-
-        DoGroundCheck();
-        UpdateRotation();
-        UpdateMovement();
-    }
-
     public void DoJump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed && _isGrounded)
-            MakePlayerJump();
+            if(Mathf.Abs(_rigidbody.linearVelocity.y) < 0.01f)
+                MakePlayerJump();
     }
 
     public void DoTogglePlatform(InputAction.CallbackContext ctx)
@@ -120,15 +198,11 @@ public class PlayerController : MonoBehaviour, IPausable
             GameManager.Instance.EventService.InvokePlayerToggledPlatformTriggerEvent();
     }
 
-    private void UpdateMovement()
+    private void OnPlayerFinishedEnteringLevel()
     {
-        transform.position += _currentMoveSpeed * Time.deltaTime * transform.forward;
-        if (!_isGrounded)
-            _animator.SetBool("Jump", true);
-        else
-            _animator.SetBool("Jump", false);
+        GameManager.Instance.EventService.InvokePlayerFinishedEnteringLevelEvent();
     }
-
+    
     private void UpdateRotation()
     {
         if(transform.forward != Vector3.zero)
@@ -149,16 +223,24 @@ public class PlayerController : MonoBehaviour, IPausable
             _movementDirection *= -1f;
     }
 
+    public virtual void SwitchState(PlayerStates newState)
+    {
+        Debug.Log(this.name + " switched to " + newState + " state!");
+        _currentState.OnExit();
+        _currentState = newState;
+        _currentState.OnEnter();
+    }
+    
     private void MakePlayerJump()
     {
-        _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        SwitchState(JumpState);
     }
 
-    private void DoGroundCheck()
+    public virtual void DoGroundCheck()
     {
         RaycastHit hitInfo;
         Vector3 center = _capsuleCollider.bounds.center;
-        _isGrounded = Physics.SphereCast(center, groundSphereCastRadius, -Vector3.up, out hitInfo, _groundSphereCastDistance,
-            LayerMask.GetMask(groundMask));
+        _isGrounded = Physics.SphereCast(center, _groundSphereCastRadius, -Vector3.up, out hitInfo, _groundSphereCastDistance,
+            LayerMask.GetMask(_groundMask));
     }
 }

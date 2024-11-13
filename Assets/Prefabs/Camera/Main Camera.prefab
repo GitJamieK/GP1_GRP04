@@ -150,8 +150,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de80c417c9b1734cbb5f4582a0d21c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 2717441577461218500, guid: a0516b2249a93cf41ae76b61e280cf14, type: 3}
-  _rotationRadius: 5
-  _rotationSpeed: 1
-  _yOffset: 5
-  _rotationOffsetAlongXAxis: 10
+  _cameraData: {fileID: 11400000, guid: b584f0187fa16434385c5cca585c7a35, type: 2}
