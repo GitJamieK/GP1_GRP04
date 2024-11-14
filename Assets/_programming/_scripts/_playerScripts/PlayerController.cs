@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour, IPausable
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene((int)GameScenes.MAIN_MENU);
     }
 
     private void OnPlayerReachedExitDoor()

@@ -9,23 +9,32 @@ EditorBuildSettings:
     path: Assets/Final Levels/Main Menu.unity
     guid: edeae2cad3962234d8ac57c0c575aee2
   - enabled: 1
+    path: Assets/Final Levels/PlayerGuideScene.unity
+    guid: ce20481d6e2ec6344a598765e58ebab3
+  - enabled: 1
+    path: Assets/Final Levels/Intro.unity
+    guid: 0d76636fdf0e18c48a23b5e76914ff5f
+  - enabled: 1
     path: Assets/Final Levels/Level1- Setdressing.unity
     guid: 9c36fb27072bc5c4681e93d211f6036b
   - enabled: 1
     path: Assets/Final Levels/Level2 setdressing.unity
     guid: 6608bb42a4aba3b43957bf123279b23d
   - enabled: 1
-    path: Assets/Final Levels/Level3 setdressing.unity
-    guid: 1a1d291a42774b04699f9d1a3038f7c5
-  - enabled: 1
-    path: Assets/Final Levels/Level 6 Setdressing.unity
-    guid: da1069fc8f7a4954cbeecfd8f1486ea3
+    path: Assets/Final Levels/Level3.2 setdressing 1.unity
+    guid: abe2ca21c59c1b6478bc4d1577fa5a20
   - enabled: 1
     path: Assets/Final Levels/Level4- Setdressing.unity
     guid: 9035995cf8c57a74a94f406724a8da7e
   - enabled: 1
-    path: Assets/Final Levels/Level5 setdressing.unity
-    guid: a77fa47e802877a40b2872dfc41048fb
+    path: Assets/Final Levels/Level 6 Setdressing.unity
+    guid: da1069fc8f7a4954cbeecfd8f1486ea3
+  - enabled: 1
+    path: Assets/Final Levels/Level5.2 setdressing.unity
+    guid: 7d4ec80a13b1f7c4f89f71894338eb9c
+  - enabled: 1
+    path: Assets/Final Levels/Credits.unity
+    guid: f45e864e9cb1cff448429a8569c7c91f
   - enabled: 1
     path: Assets/Final Levels/Thank you.unity
     guid: 2d577241d874e734daef3d07b6b9c2ed

@@ -7,7 +7,7 @@ public class LevelLoader : MonoBehaviour
 {
     [SerializeField] private Animator _finishDoorAnimator;
     
-    private int _firstSceneBuildIndex = 0;
+    private int _firstSceneBuildIndex = (int)GameScenes.MAIN_MENU;
     private int _numberOfScenes;
     private int _levelIndexToBeLoaded;
     private int _activeBuildIndex;

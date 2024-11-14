@@ -19,7 +19,7 @@ public class SeedBurstController : MonoBehaviour
 
     public void AE_SeedBurst()
     {
-        _SeedBurst.SendEvent("seedBurstReal");
+        _SeedBurst.SendEvent("kaboom");
 
 
 
