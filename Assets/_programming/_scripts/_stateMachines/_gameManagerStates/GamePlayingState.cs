@@ -27,7 +27,7 @@ public class GamePlayingState : ManagerStates {
 
     public override void PhysicsUpdate()
     {
-        base.PhysicsUpdate();
+        _gameManager.Player?.PhysicsUpdate();
     }
 
     public override void AnimationEnterTrigger()

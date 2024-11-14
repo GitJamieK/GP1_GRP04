@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : StateMachine
 {
+    public float TimeScale;
     private static GameManager instance;
 
     public static GameManager Instance
@@ -31,15 +32,16 @@ public class GameManager : StateMachine
         DontDestroyOnLoad(this);
         InitializeServices();
         CreateStates();
+        Time.timeScale = TimeScale;
     }
 
-    private void Start()
+    private void Start()               
     {
         Player = FindAnyObjectByType<PlayerController>();
         UIService = FindAnyObjectByType<UIService>();
         UIService.UpdateSeedsCollected(NumberOfSeedsCollected);
+        SwitchState<GamePausedState>();
         SubscribeToEvents();
-        SwitchState<GamePlayingState>();
     }
 
     private void OnDestroy()
@@ -51,6 +53,8 @@ public class GameManager : StateMachine
         EventService.OnPlayerEnteredWorldRotationTrigger += OnPlayerEnteredWorldRotationTrigger;
         EventService.OnCameraFinishedRotation += SwitchState<GamePlayingState>;
         EventService.OnPlayerCollectedSeed += UpdateSeeds;
+        EventService.OnPlayerFinishedEnteringLevel += SwitchState<GamePlayingState>;
+        EventService.OnPlayerStartedOpeningDoor += SwitchState<GamePausedState>;
         SceneManager.activeSceneChanged += OnNewSceneChange;
     }
 
@@ -59,6 +63,8 @@ public class GameManager : StateMachine
         EventService.OnPlayerEnteredWorldRotationTrigger -= OnPlayerEnteredWorldRotationTrigger;
         EventService.OnCameraFinishedRotation -= SwitchState<GamePlayingState>;
         EventService.OnPlayerCollectedSeed -= UpdateSeeds;
+        EventService.OnPlayerFinishedEnteringLevel -= SwitchState<GamePlayingState>;
+        EventService.OnPlayerStartedOpeningDoor -= SwitchState<GamePausedState>;
         SceneManager.activeSceneChanged -= OnNewSceneChange;
     }
 
@@ -66,7 +72,7 @@ public class GameManager : StateMachine
     {
         Player = FindAnyObjectByType<PlayerController>();
         if (nextScene.buildIndex != 0 || nextScene.buildIndex == SceneManager.sceneCountInBuildSettings - 1)
-            SwitchState<GamePlayingState>();
+            SwitchState<GamePausedState>();
         else
         {
             NumberOfSeedsCollected = 0;

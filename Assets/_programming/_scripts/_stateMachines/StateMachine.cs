@@ -15,6 +15,11 @@ public class StateMachine : MonoBehaviour
         currentState?.LogicUpdate();
     }
 
+    public void FixedUpdate()
+    {
+        currentState?.PhysicsUpdate();
+    }
+
     protected void SwitchState<TanyState>()
     {
         foreach (ManagerStates state in states)

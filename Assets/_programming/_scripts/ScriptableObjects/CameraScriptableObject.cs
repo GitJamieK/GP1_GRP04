@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CameraScriptableObject", menuName = "Scriptable Objects/CameraScriptableObject")]
+[CreateAssetMenu(fileName = "CameraScriptableObject", menuName = "Scriptable Objects/CameraScriptableObject", order = 0)]
 public class CameraScriptableObject : ScriptableObject
 {
     public PlayerController Target;

@@ -4,7 +4,8 @@ using UnityEngine;
 public class PlatformController : MonoBehaviour
 {
     [SerializeField] private BoxCollider _platformCollider;
-    [SerializeField] private Animator _platformAnimator;
+    [SerializeField] private Animator _platformAnimator1;
+    [SerializeField] private Animator _platformAnimator2;
     [SerializeField] private bool _startingToggle;
 
     private bool _currentToggleState;
@@ -39,7 +40,8 @@ public class PlatformController : MonoBehaviour
     private void ToggleVine(bool toggleValue)
     {
         ToggleCollider(toggleValue);
-        _platformAnimator.SetBool("ExpandVines", toggleValue);
+        _platformAnimator1.SetBool("ExpandVines", toggleValue);
+        _platformAnimator2.SetBool("ExpandVines", toggleValue);
     }
 
     private void ToggleCollider(bool toggle) => _platformCollider.enabled = toggle;

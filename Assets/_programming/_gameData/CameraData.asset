@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1e0d6d054a3924392601e68ddb6d2f, type: 3}
   m_Name: CameraData
   m_EditorClassIdentifier: 
-  Target: {fileID: 2717441577461218500, guid: a0516b2249a93cf41ae76b61e280cf14, type: 3}
+  Target: {fileID: 0}
   RotationRadius: 5
   RotationSpeed: 1
   Y_Offset: 5

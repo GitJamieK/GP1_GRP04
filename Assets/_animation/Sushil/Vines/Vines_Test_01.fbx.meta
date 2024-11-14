@@ -31,7 +31,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Vines_Armature|Vines_Animation
+      name: Vine_01_Expand
       takeName: Vines_Armature|Vines_Animation
       internalID: 3047124639339690823
       firstFrame: 0
@@ -60,7 +60,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Vines_Armature|Vines_Animation.001
+      name: Vine_01_Idle
       takeName: Vines_Armature|Vines_Animation.001
       internalID: -6478838453675289044
       firstFrame: 0
