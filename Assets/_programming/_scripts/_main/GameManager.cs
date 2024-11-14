@@ -70,6 +70,14 @@ public class GameManager : StateMachine
 
     private void OnNewSceneChange(Scene currentScene, Scene nextScene)
     {
+        if (nextScene.buildIndex < (int)GameScenes.LEVEL_1 || nextScene.buildIndex == (int)GameScenes.OUTRO || nextScene.buildIndex == (int)GameScenes.THANK_YOU)
+        {
+            SwitchState<GameSuspendedState>();
+            if(nextScene.buildIndex == (int)GameScenes.MAIN_MENU)
+                NumberOfSeedsCollected = 0;
+            return;
+        }
+
         Player = FindAnyObjectByType<PlayerController>();
         if (nextScene.buildIndex != 0 || nextScene.buildIndex == SceneManager.sceneCountInBuildSettings - 1)
             SwitchState<GamePausedState>();
@@ -94,6 +102,7 @@ public class GameManager : StateMachine
         states.Add(new GamePausedState(this, "", ""));
         states.Add(new GamePlayingState(this, "", ""));
         states.Add(new GameRotationState(this, "", ""));
+        states.Add(new GameSuspendedState(this, "", ""));
     }
 
     private void OnPlayerEnteredWorldRotationTrigger(RotationDirection rotationDirection)
