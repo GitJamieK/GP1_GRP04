@@ -18,6 +18,7 @@ public class GameManager : StateMachine
     public EventService EventService;
     public PlayerController Player;
     public UIService UIService;
+    public AudioService AudioService;
     public int NumberOfSeedsCollected;
     
     private int _seedsAtStartOfLevel;
@@ -40,8 +41,10 @@ public class GameManager : StateMachine
         Player = FindAnyObjectByType<PlayerController>();
         UIService = FindAnyObjectByType<UIService>();
         UIService.UpdateSeedsCollected(NumberOfSeedsCollected);
+        AudioService = FindAnyObjectByType<AudioService>();
         SwitchState<GamePausedState>();
         SubscribeToEvents();
+        Instance.EventService.InvokeOnAmbientAudioPlay(AudioService.musicSounds[0].name);
     }
 
     private void OnDestroy()
@@ -55,6 +58,8 @@ public class GameManager : StateMachine
         EventService.OnPlayerCollectedSeed += UpdateSeeds;
         EventService.OnPlayerFinishedEnteringLevel += SwitchState<GamePlayingState>;
         EventService.OnPlayerStartedOpeningDoor += SwitchState<GamePausedState>;
+        EventService.OnAmbientAudioPlay += PlayAmbientAudio;
+        EventService.OnSfxPlay += PlaySfxAudio;
         SceneManager.activeSceneChanged += OnNewSceneChange;
     }
 
@@ -65,6 +70,8 @@ public class GameManager : StateMachine
         EventService.OnPlayerCollectedSeed -= UpdateSeeds;
         EventService.OnPlayerFinishedEnteringLevel -= SwitchState<GamePlayingState>;
         EventService.OnPlayerStartedOpeningDoor -= SwitchState<GamePausedState>;
+        EventService.OnAmbientAudioPlay -= PlayAmbientAudio;
+        EventService.OnSfxPlay -= PlaySfxAudio;
         SceneManager.activeSceneChanged -= OnNewSceneChange;
     }
 
@@ -87,9 +94,13 @@ public class GameManager : StateMachine
             SwitchState<GamePausedState>();
         }
         
+        
+        PlayerPrefs.SetInt("NumberOfSeedsCollected", NumberOfSeedsCollected);
         UIService = FindAnyObjectByType<UIService>();
         UIService.UpdateSeedsCollected(NumberOfSeedsCollected);
-        PlayerPrefs.SetInt("NumberOfSeedsCollected", NumberOfSeedsCollected);
+        AudioService = FindAnyObjectByType<AudioService>();
+        EventService.InvokeOnAmbientAudioPlay(AudioService.musicSounds[0].name);
+        
     }
     private void InitializeServices()
     {
@@ -115,4 +126,8 @@ public class GameManager : StateMachine
         NumberOfSeedsCollected++;
         UIService.UpdateSeedsCollected(NumberOfSeedsCollected);
     }
+
+    private void PlayAmbientAudio(string ambientAudio) => AudioService.PlayMusic(ambientAudio);
+
+    private void PlaySfxAudio(string SFXAudio) => AudioService.PlaySFX(SFXAudio);
 }
