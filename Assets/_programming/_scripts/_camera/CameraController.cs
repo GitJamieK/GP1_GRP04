@@ -4,11 +4,13 @@ using UnityEngine.Serialization;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private PlayerController _target;
-    [SerializeField] private float _rotationRadius;
-    [SerializeField] private float _rotationSpeed;
-    [SerializeField] private float _yOffset;
-    [SerializeField] private float _rotationOffsetAlongXAxis;
+    [SerializeField] private CameraScriptableObject _cameraData;
+
+    private PlayerController _target;
+    private float _rotationRadius;
+    private float _rotationSpeed;
+    private float _yOffset;
+    private float _rotationOffsetAlongXAxis;
 
     private Vector3 _offsetVector;
     private float _positionOnUnitCircle;
@@ -19,8 +21,22 @@ public class CameraController : MonoBehaviour
     private static float _zOffset = 5f;
     private readonly float _digitsForRotationDecimal = 1000f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void Awake()
+    {
+        InitData();
+    }
+
+    private void InitData()
+    {
+        _target = _cameraData.Target;
+        _rotationRadius = _cameraData.RotationRadius;
+        _rotationSpeed = _cameraData.RotationSpeed;
+        _yOffset = _cameraData.Y_Offset;
+        _rotationOffsetAlongXAxis = _cameraData.RotationOffsetAlongXAxis;
+    }
+
+    private void Start()
     {
         _target = FindAnyObjectByType<PlayerController>();
         _offsetVector = new Vector3(0f, _yOffset, -_zOffset);
@@ -33,7 +49,6 @@ public class CameraController : MonoBehaviour
         GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger -= StartRotateAround;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_rotateAroundCorner)
@@ -48,20 +63,22 @@ public class CameraController : MonoBehaviour
     private void RotateAround()
     {
         float finalPosCheck;
-        _positionOnUnitCircle = Mathf.Round(_positionOnUnitCircle * _digitsForRotationDecimal) / _digitsForRotationDecimal;
+        _positionOnUnitCircle =
+            Mathf.Round(_positionOnUnitCircle * _digitsForRotationDecimal) / _digitsForRotationDecimal;
         _finalPosOnRotation = Mathf.Round(_finalPosOnRotation * _digitsForRotationDecimal) / _digitsForRotationDecimal;
-        
+
         _positionOnUnitCircle += Time.deltaTime * _rotationSpeed * Mathf.Sign(_cameraRotationDirection);
         Vector3 currentRotPosition =
             new Vector3(Mathf.Cos(_positionOnUnitCircle), 0f, Mathf.Sin(_positionOnUnitCircle)) * _rotationRadius;
         transform.position += currentRotPosition * Time.deltaTime;
-        
+
         Vector3 camPositionInWorldSpaceWithHeight = transform.position;
         camPositionInWorldSpaceWithHeight.y = _target.transform.position.y + _yOffset;
-        
+
         transform.position = camPositionInWorldSpaceWithHeight;
         transform.LookAt(_target.gameObject.transform.position);
-        transform.eulerAngles = new Vector3(_rotationOffsetAlongXAxis, transform.eulerAngles.y, transform.eulerAngles.z);
+        transform.eulerAngles =
+            new Vector3(_rotationOffsetAlongXAxis, transform.eulerAngles.y, transform.eulerAngles.z);
 
         if (_finalPosOnRotation == 0f)
             finalPosCheck = _positionOnUnitCircle;
@@ -150,10 +167,11 @@ public class CameraController : MonoBehaviour
             _offsetVector = new Vector3(0f, _yOffset, GetOffsetMagnitudeAlongZAxis(dotProductOnXAxis));
         else if (dotProductOnZAxis > 0.01f || dotProductOnZAxis < -0.01f)
             _offsetVector = new Vector3(GetOffsetMagnitudeAlongXAxis(dotProductOnZAxis), _yOffset, 0f);
-        
-        transform.eulerAngles = new Vector3(_rotationOffsetAlongXAxis, transform.eulerAngles.y, transform.eulerAngles.z);
+
+        transform.eulerAngles =
+            new Vector3(_rotationOffsetAlongXAxis, transform.eulerAngles.y, transform.eulerAngles.z);
     }
-    
+
     private void StartRotateAround(RotationDirection rotationDirection)
     {
         if (rotationDirection == RotationDirection.FORWARD)
@@ -166,9 +184,11 @@ public class CameraController : MonoBehaviour
         {
             _cameraRotationDirection = -1f;
             _positionOnUnitCircle =
-                Mathf.Atan2(-transform.right.z, -transform.right.x); //YOU ARE SETTING THE AXIS OF THE CIRCLE TO BE X-Z AXIS
+                Mathf.Atan2(-transform.right.z,
+                    -transform.right.x); //YOU ARE SETTING THE AXIS OF THE CIRCLE TO BE X-Z AXIS
             _finalPosOnRotation = _positionOnUnitCircle - Mathf.PI / 2f;
         }
+
         _rotateAroundCorner = true;
     }
 }
