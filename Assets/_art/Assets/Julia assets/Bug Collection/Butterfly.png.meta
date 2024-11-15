@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/_art/Assets/Julia assets/Bug Collection/Butterfly.png.meta
 guid: 8d9b91472b14a0246927a00a17b9faf9
+========
+guid: 35bf8c7031a4ea540b60b1d3b5959d69
+>>>>>>>> Programmers:Assets/_art/Assets/Julia assets/Seed/Seed texture.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

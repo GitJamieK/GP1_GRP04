@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - DirectionSwap
+  - FinishDoor
   layers:
   - Default
   - TransparentFX

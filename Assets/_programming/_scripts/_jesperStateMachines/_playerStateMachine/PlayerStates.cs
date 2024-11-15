@@ -1,3 +1,4 @@
+using jamie;
 using UnityEngine;
 
 namespace Jesper.PlayerStateMachine {
@@ -65,10 +66,8 @@ namespace Jesper.PlayerStateMachine {
         public virtual void PhysicsUpdate() {
             if (Player.MovementLocked)
                 return;
-            
-            Debug.Log("Player are falling");
-            if(Player.PlayerRigidbody.linearVelocity.y < 0.01f)
-                Player.PlayerRigidbody.AddForce(Vector3.down * Player.DownwardJumpForce, ForceMode.Acceleration);
+            if (Player.PlayerRigidbody.linearVelocity.y < -0.01f && Player.IsGrounded)
+                Player.PlayerRigidbody.AddForce(Vector3.down * Player.DownwardJumpForce, ForceMode.Acceleration);   
         }
         /// <summary>
         /// Trigger an Animation Parameter when Animation are enter

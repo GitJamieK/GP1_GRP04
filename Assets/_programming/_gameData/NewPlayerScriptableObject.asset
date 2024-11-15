@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NewPlayerScriptableObject
   m_EditorClassIdentifier: 
   MoveSpeed: 4
-  UpwardJumpForce: 10
-  DownwardJumpForce: 20
-  Velocity: 20
-  GroundSphereCastDistance: 1
+  UpwardJumpForce: 6
+  DownwardJumpForce: 12
+  Velocity: 16
+  GroundSphereCastDistance: 0.9

@@ -10,7 +10,6 @@ namespace Jesper.PlayerStateMachine {
 
         public override void OnEnter() {
             base.OnEnter();
-            Debug.Log("Player are Running");
         }
 
         public override void OnExit() {
@@ -44,7 +43,6 @@ namespace Jesper.PlayerStateMachine {
         
         private void UpdateMovement()
         {
-            Debug.Log("Player are Running");
             Player.transform.position += Player.CurrentMoveSpeed * Time.deltaTime * Player.transform.forward;
         }
     }

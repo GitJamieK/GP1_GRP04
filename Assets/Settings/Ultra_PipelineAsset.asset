@@ -21,12 +21,12 @@ MonoBehaviour:
   m_DefaultRendererIndex: 0
   m_RequireDepthTexture: 1
   m_RequireOpaqueTexture: 0
-  m_OpaqueDownsampling: 1
+  m_OpaqueDownsampling: 3
   m_SupportsTerrainHoles: 1
   m_SupportsHDR: 1
   m_HDRColorBufferPrecision: 0
-  m_MSAA: 2
-  m_RenderScale: 1
+  m_MSAA: 4
+  m_RenderScale: 2
   m_UpscalingFilter: 0
   m_FsrOverrideSharpness: 0
   m_FsrSharpness: 0.92
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_MainLightShadowsSupported: 1
   m_MainLightShadowmapResolution: 4096
   m_AdditionalLightsRenderingMode: 1
-  m_AdditionalLightsPerObjectLimit: 4
+  m_AdditionalLightsPerObjectLimit: 8
   m_AdditionalLightShadowsSupported: 1
   m_AdditionalLightsShadowmapResolution: 4096
   m_AdditionalLightsShadowResolutionTierLow: 256
@@ -84,14 +84,14 @@ MonoBehaviour:
   m_SupportScreenSpaceLensFlare: 1
   m_GPUResidentDrawerMode: 0
   m_SmallMeshScreenPercentage: 0
-  m_GPUResidentDrawerEnableOcclusionCullingInCameras: 0
+  m_GPUResidentDrawerEnableOcclusionCullingInCameras: 1
   m_ShadowType: 1
   m_LocalShadowsSupported: 0
   m_LocalShadowsAtlasResolution: 256
   m_MaxPixelLights: 0
   m_ShadowAtlasResolution: 256
   m_VolumeFrameworkUpdateMode: 0
-  m_VolumeProfile: {fileID: 0}
+  m_VolumeProfile: {fileID: 11400000, guid: 36af21eb9e9b1a2488f54846be75fad5, type: 2}
   apvScenesData:
     obsoleteSceneBounds:
       m_Keys: []

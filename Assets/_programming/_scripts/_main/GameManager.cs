@@ -35,13 +35,13 @@ public class GameManager : StateMachine
         Time.timeScale = TimeScale;
     }
 
-    private void Start()
+    private void Start()               
     {
         Player = FindAnyObjectByType<PlayerController>();
         UIService = FindAnyObjectByType<UIService>();
         UIService.UpdateSeedsCollected(NumberOfSeedsCollected);
-        SubscribeToEvents();
         SwitchState<GamePausedState>();
+        SubscribeToEvents();
     }
 
     private void OnDestroy()
@@ -54,6 +54,7 @@ public class GameManager : StateMachine
         EventService.OnCameraFinishedRotation += SwitchState<GamePlayingState>;
         EventService.OnPlayerCollectedSeed += UpdateSeeds;
         EventService.OnPlayerFinishedEnteringLevel += SwitchState<GamePlayingState>;
+        EventService.OnPlayerStartedOpeningDoor += SwitchState<GamePausedState>;
         SceneManager.activeSceneChanged += OnNewSceneChange;
     }
 
@@ -63,14 +64,23 @@ public class GameManager : StateMachine
         EventService.OnCameraFinishedRotation -= SwitchState<GamePlayingState>;
         EventService.OnPlayerCollectedSeed -= UpdateSeeds;
         EventService.OnPlayerFinishedEnteringLevel -= SwitchState<GamePlayingState>;
+        EventService.OnPlayerStartedOpeningDoor -= SwitchState<GamePausedState>;
         SceneManager.activeSceneChanged -= OnNewSceneChange;
     }
 
     private void OnNewSceneChange(Scene currentScene, Scene nextScene)
     {
+        if (nextScene.buildIndex < (int)GameScenes.LEVEL_1 || nextScene.buildIndex == (int)GameScenes.OUTRO || nextScene.buildIndex == (int)GameScenes.THANK_YOU)
+        {
+            SwitchState<GameSuspendedState>();
+            if(nextScene.buildIndex == (int)GameScenes.MAIN_MENU)
+                NumberOfSeedsCollected = 0;
+            return;
+        }
+
         Player = FindAnyObjectByType<PlayerController>();
         if (nextScene.buildIndex != 0 || nextScene.buildIndex == SceneManager.sceneCountInBuildSettings - 1)
-            SwitchState<GamePlayingState>();
+            SwitchState<GamePausedState>();
         else
         {
             NumberOfSeedsCollected = 0;
@@ -92,6 +102,7 @@ public class GameManager : StateMachine
         states.Add(new GamePausedState(this, "", ""));
         states.Add(new GamePlayingState(this, "", ""));
         states.Add(new GameRotationState(this, "", ""));
+        states.Add(new GameSuspendedState(this, "", ""));
     }
 
     private void OnPlayerEnteredWorldRotationTrigger(RotationDirection rotationDirection)

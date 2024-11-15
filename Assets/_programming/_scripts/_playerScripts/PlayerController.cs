@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -7,7 +9,7 @@ using Jesper.PlayerStateMachine;
 public class PlayerController : MonoBehaviour, IPausable
 {
     
-    private PlayerStates _currentState;
+    public PlayerStates _currentState;
     
     public PlayerIdleState IdleState;
     public PlayerRunState RunState;
@@ -113,11 +115,15 @@ public class PlayerController : MonoBehaviour, IPausable
     private void SubscribeToEvents()
     {
         GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger += RotatePlayer;
+        GameManager.Instance.EventService.OnPlayerReachedFinishDoor += OnPlayerReachedExitDoor;
+        GameManager.Instance.EventService.OnPlayerStartedOpeningDoor += OnPlayerStartedOpeningDoor;
     }
 
     private void UnsubscribeFromEvents()
     {
         GameManager.Instance.EventService.OnPlayerEnteredWorldRotationTrigger -= RotatePlayer;
+        GameManager.Instance.EventService.OnPlayerReachedFinishDoor -= OnPlayerReachedExitDoor;
+        GameManager.Instance.EventService.OnPlayerStartedOpeningDoor -= OnPlayerStartedOpeningDoor;
     }
     
     public void UpdatePlayer()
@@ -164,7 +170,25 @@ public class PlayerController : MonoBehaviour, IPausable
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene((int)GameScenes.MAIN_MENU);
+    }
+
+    private void OnPlayerReachedExitDoor()
+    {
+        _currentMoveSpeed = 0f;
+        StartCoroutine(nameof(PlayerOpenedExitDoorCoroutine));
+    }
+
+    private IEnumerator PlayerOpenedExitDoorCoroutine()
+    {
+        while(!_isGrounded)
+            yield return null;
+        GameManager.Instance.EventService.InvokePlayerStartedOpeningDoorEvent();
+    }
+
+    private void OnPlayerStartedOpeningDoor()
+    {
+        _animator.SetTrigger("LevelExit");
     }
 
     private void RefreshCurrentAxes()
@@ -225,7 +249,6 @@ public class PlayerController : MonoBehaviour, IPausable
 
     public virtual void SwitchState(PlayerStates newState)
     {
-        Debug.Log(this.name + " switched to " + newState + " state!");
         _currentState.OnExit();
         _currentState = newState;
         _currentState.OnEnter();
